@@ -76,7 +76,7 @@ render() {
           <MessageBox db={firebase} />
         </div>
       </div>
-      <Button color="primary" onClick={this.closeApp}>Close</Button>
+      {/* <Button color="primary" onClick={this.closeApp}>Close</Button> */}
     </div>
   );
  }
