@@ -1,45 +1,49 @@
 // App.js
 import React, { Component } from 'react';
 import Header from '../src/components/Header';
-import MessageList from './components/MessageList';
-import MessageBox from './components/MessageBox';
+import AllList from './components/AllList';
+import YourList from './components/YourList';
+import Navbar from './components/Navbar';
 import firebase from 'firebase';
+import 'firebase/firestore';
 
 const liff = window.liff;  
+
 class App extends Component {
   constructor(props){
     super(props);
-
+    this.initialize = this.initialize.bind(this);
     this.state = {
       groupId: '',
       displayName : '',
       userId : '',
       pictureUrl : '',
-      statusMessage : ''
+      tasks:'',
+      assignee:'',
+      detail:'',
+      status:''
     };
 
-    this.initialize = this.initialize.bind(this);
-    this.closeApp = this.closeApp.bind(this);
 
     var config = {
-    apiKey: "AIzaSyAFXBsagqOOXzWySieOoYNDs8HaTUuRk6k",
-    authDomain: "testproject-6e25f.firebaseapp.com",
-    databaseURL: "https://testproject-6e25f.firebaseio.com/",
-    projectId: "testproject-6e25f",
-    storageBucket: "bucket.appspot.com",
-    messagingSenderId: "841427036189"
+      apiKey: "AIzaSyCmCs0fRWBIGywo2XEwYV08rtyIqk8Kcdw",
+      authDomain: "memo-chatbot.firebaseapp.com",
+      databaseURL: "https://memo-chatbot.firebaseio.com",
+      projectId: "memo-chatbot",
+      storageBucket: "memo-chatbot.appspot.com",
+      messagingSenderId: "1021071669137",
+      appId: "1:1021071669137:web:60637043b6e3d025"
   };
   firebase.initializeApp(config);
 }
 
 componentDidMount() {
   window.addEventListener('load', this.initialize);
+  
 }
 
 initialize() {
   liff.init(async (data) => {
-    let groupId = data.context.groupId;
-    console.log(groupId)
     let profile = await liff.getProfile();
     this.setState({
       displayName : profile.displayName,
@@ -50,33 +54,12 @@ initialize() {
   }); 
 }
 
-closeApp(event) {
-  event.preventDefault();
-  liff.sendMessages([{
-    type: 'text',
-    text: "Thank you, Bye!"
-  }]).then(() => {
-    liff.closeWindow();
-  });
-}
-
 render() {
   return (
     <div className="container">
-      <Header title="Simple Firebase App" />
-      <div className="columns">
-        <div className="column is-3"></div>
-        <div className="column is-6">
-          <MessageList db={firebase} />
-        </div>
-      </div>
-      <div className="columns">
-        <div className="column is-3"></div>
-        <div className="column is-6">
-          <MessageBox db={firebase} />
-        </div>
-      </div>
-      <Button color="primary" onClick={this.closeApp}>Close</Button>
+      <Header/>
+      <Navbar/>
+      <AllList/>
     </div>
   );
  }

@@ -1,16 +1,14 @@
-// Header.js
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import './Header.css'
+
 class Header extends Component {
-  render(){
+
+  render() {
     return (
-      <nav className="navbar">
-        <div className="navbar-brand">
-          <a className="navbar-item" href="http://bulma.io">
-            {this.props.title}
-          </a>
-        </div>
-      </nav>
-    )
+      <div className= 'title'>
+        Bot
+      </div>
+    );
+   }
   }
-}
-export default Header
+  export default Header;
