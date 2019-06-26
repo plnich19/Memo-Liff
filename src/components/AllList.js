@@ -19,32 +19,15 @@ class AllList extends Component {
             .then(snapshot => {
                 snapshot.forEach(doc => {
                     instantLists.push(doc.id)
-                    console.log(doc.id)
                 });
-
-
                 console.log(instantLists, 'instantLists')
                 this.setState({
                     getList: instantLists
                 })
-
             })
             .catch(err => {
                 console.log('Error getting documents', err);
             });
-
-
-
-        // ref.get().then((doc) => {
-        //     if (doc.exists) {
-        //         this.setState({
-        //             getList: doc.id
-        //         })
-        //     } else {
-        //         console.log("No such document!");
-        //     }
-
-        // });
         console.log(this.state.getList)
     }
 
@@ -52,12 +35,12 @@ class AllList extends Component {
 
         return (
             <div>
-                <h1>List Tasks</h1>
+                <h1>All Tasks</h1>
                 <table className='alllisttable'>
                     {
                         this.state.getList.map((id) => {
                             return (
-                                    <tr>{id}</tr>
+                                <tr>{id}</tr>
                             )
                         })
                     }

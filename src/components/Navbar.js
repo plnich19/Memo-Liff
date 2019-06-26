@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
-import {Link, BrowserRouter as Router } from 'react-router-dom';
+import {NavLink, BrowserRouter as Router } from 'react-router-dom';
+import './Navbar.css';
+
 class Navbar extends Component {
+
     
 
   render() {
     return (
       <div>
-        <ul>
-            <li><Link to="/">All Tasks List</Link></li>
-            <li><Link to="/YourList">Your Tasks List</Link></li>            
-        </ul>
+        
+          <NavLink to="/"><button className='allTaskButton'> All Tasks List</button> </NavLink>
+          <NavLink to="/YourList"><button className='yourTaskButton'> Your Tasks List </button> </NavLink>        
+        
       </div>
     );
    }

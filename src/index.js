@@ -9,10 +9,13 @@ import * as serviceWorker from './serviceWorker';
 
 const routing = (
     <Router >
-    <Route path ="/" component={App}/>
-    <Route path = "/AllList" component={AllList}/>
-    <Route path = "/YourList" component={YourList}/>
+         <App>
+        <Route exact path ="/" component={AllList}/>
+        <Route path = "/AllList" component={AllList}/>
+        <Route path = "/YourList" component={YourList}/>
+        </App>
     </Router>
+
 )
 
 ReactDOM.render(routing, document.getElementById('root'));

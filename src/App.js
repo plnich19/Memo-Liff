@@ -7,21 +7,19 @@ import Navbar from './components/Navbar';
 import firebase from 'firebase';
 import 'firebase/firestore';
 
-const liff = window.liff;  
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
+const liff = window.liff;
 
 class App extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.initialize = this.initialize.bind(this);
     this.state = {
-      groupId: '',
-      displayName : '',
-      userId : '',
-      pictureUrl : '',
-      tasks:'',
-      assignee:'',
-      detail:'',
-      status:''
+      displayName: '',
+      userId: '',
+      pictureUrl: '',
+      statusMessage: ''
     };
 
 
@@ -33,35 +31,49 @@ class App extends Component {
       storageBucket: "memo-chatbot.appspot.com",
       messagingSenderId: "1021071669137",
       appId: "1:1021071669137:web:60637043b6e3d025"
-  };
-  firebase.initializeApp(config);
-}
+    };
+    firebase.initializeApp(config);
+  }
 
-componentDidMount() {
-  window.addEventListener('load', this.initialize);
-  
-}
+  componentDidMount() {
+    window.addEventListener('load', this.initialize);
 
-initialize() {
-  liff.init(async (data) => {
-    let profile = await liff.getProfile();
-    this.setState({
-      displayName : profile.displayName,
-      userId : profile.userId,
-      pictureUrl : profile.pictureUrl,
-      statusMessage : profile.statusMessage
+  }
+
+  initialize() {
+    liff.init(async (data) => {
+      let profile = await liff.getProfile();
+      this.setState({
+        displayName: profile.displayName,
+        userId: profile.userId,
+        pictureUrl: profile.pictureUrl,
+        statusMessage: profile.statusMessage
+      });
     });
-  }); 
+  }
+
+  render() {
+    const { children } = this.props
+    return (
+      <div className="container">
+        <Header />
+        <Navbar />
+        {children}
+      </div>
+      //   <Router >
+      //   <div className="container">
+      //     <Header/>
+      //     <Navbar/>
+      //     <h1>HELLO</h1>
+      //     {/* <AllList/> */}
+      //     <Route path ="/" component={App}/>
+      //     <Route path = "/AllList" component={AllList}/>
+      //     <Route path = "/YourList" component={YourList}/>
+      //   </div>
+      // </Router>
+    );
+  }
 }
 
-render() {
-  return (
-    <div className="container">
-      <Header/>
-      <Navbar/>
-      <AllList/>
-    </div>
-  );
- }
-}
+// ReactDOM.render(routing, document.getElementById('root'));
 export default App;
