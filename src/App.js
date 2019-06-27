@@ -11,14 +11,13 @@ const liff = window.liff;
 class App extends Component {
   constructor(props) {
     super(props);
-    this.initialize = this.initialize.bind(this);
     this.state = {
-      displayName: '',
-      userId: '',
-      pictureUrl: '',
-      groupId: '',
-      statusMessage: '',
-      
+      // displayName: '',
+      // userId: '',
+      // pictureUrl: '',
+      // groupId: '',
+      // statusMessage: '',
+     
     };
 
 
@@ -39,26 +38,35 @@ class App extends Component {
 
   }
 
-  initialize() {
-    liff.init(async (data) => {
-      let profile = await liff.getProfile();
-      const groupId = await data.context.groupId;
-      this.setState({
-        displayName: profile.displayName,
-        userId: profile.userId,
-        pictureUrl: profile.pictureUrl,
-        statusMessage: profile.statusMessage,
-        groupId: groupId
-      });
-    });
+  liffSuccess = () => {
+    console.log("liffSuccess")
+}
+
+liffError = () => {
+    console.log("liffError")
+}
+
+  initialize = () => {
+    // liff.init(async (data) => {
+    //   let profile = await liff.getProfile();
+    //   const groupId = await data.context.groupId;
+    //   this.setState({
+    //     displayName: profile.displayName,
+    //     userId: profile.userId,
+    //     pictureUrl: profile.pictureUrl,
+    //     statusMessage: profile.statusMessage,
+    //     groupId: groupId
+    //   });
+    // });
+    liff.init(this.liffSuccess, this.liffError)
   }
 
   render() {
     const {children} = this.props;
+
     
-    return (
+    return ( 
       <div className="container">
-        
         <Header />
         <Navbar></Navbar>
         {children}

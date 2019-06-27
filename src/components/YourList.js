@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import Modal from 'react-responsive-modal';
 import './YourList.css';
 
-// const liff = window.liff;
+const liff = window.liff;
 
 class YourList extends Component {
 
@@ -12,6 +12,7 @@ class YourList extends Component {
         super(props);
         // this.initialize = this.initialize.bind(this);
         this.state = {
+            liffData: '',
             getYourList: [],
             displayName: '',
             userId: '',
@@ -21,43 +22,53 @@ class YourList extends Component {
             openDelete: false,
             checked: false,
             openCheck: false,
-            // groupId:''
+            groupId: ''
         };
 
     }
 
-    // initialize() {
-    //     liff.init(async (data) => {
-    //         const groupId = await data.context.groupId;
-    //         let profile = await liff.getProfile();
-    //         this.setState({
-    //             displayName: profile.displayName,
-    //             userId: profile.userId,
-    //             pictureUrl: profile.pictureUrl,
-    //             statusMessage: profile.statusMessage,
-    //             groupId: groupId
-    //         });
-    //     });
-    // }
+
+    liffSuccess = (data) => {
+        let profile = liff.getProfile();
+        this.setState({
+            liffData: data,
+            displayName: profile.displayName,
+            userId: profile.userId,
+            pictureUrl: profile.pictureUrl,
+            statusMessage: profile.statusMessage,
+            groupId: groupId
+        });
+    }
+
+    liffError = (err) => {
+        console.error("liffError")
+        this.setState({
+            liffData: err
+        });
+    }
+
+
+    initialize = () => {
+        liff.init(this.liffSuccess, this.liffError)
+    }
 
     componentDidMount() {
-        console.log(this.props)
-        // window.addEventListener('load', this.initialize);
-        let instantLists = []
-        const ref = firebase.firestore().collection('data').doc('groupId-fadgeagsdfreasdgfgesdf').collection('tasks');
-        const query = ref.where('assignee', 'array-contains', this.state.displayName).get()
-            .then(snapshot => {
-                snapshot.forEach(doc => {
-                    instantLists.push(doc.id)
-                });
-                console.log(instantLists, 'instantLists')
-                this.setState({
-                    getYourList: instantLists
-                })
-            })
-            .catch(err => {
-                console.log('Error getting documents', err);
-            });
+        window.addEventListener('load', this.initialize);
+        // let instantLists = []
+        // const ref = firebase.firestore().collection('data').doc('groupId-fadgeagsdfreasdgfgesdf').collection('tasks');
+        // const query = ref.where('assignee', 'array-contains', this.state.displayName).get()
+        //     .then(snapshot => {
+        //         snapshot.forEach(doc => {
+        //             instantLists.push(doc.id)
+        //         });
+        //         console.log(instantLists, 'instantLists')
+        //         this.setState({
+        //             getYourList: instantLists
+        //         })
+        //     })
+        //     .catch(err => {
+        //         console.log('Error getting documents', err);
+        //     });
     }
 
     onOpenEditModal = () => {
@@ -97,6 +108,7 @@ class YourList extends Component {
     }
 
     render() {
+        const { liffData } = this.state
         return (
             <div>
 
@@ -112,7 +124,9 @@ class YourList extends Component {
                         }
                     </table>
                 </div> */}
-                
+                <p>17:47</p>
+                <p>{liffData}</p>
+                <p>{this.state.displayName}</p>
                 <button className='editModal' onClick={this.onOpenEditModal}>Edit</button>
                 <Modal open={this.state.openEdit} onClose={this.onCloseEditModal} center>
                     <h2>Edit</h2>
