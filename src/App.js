@@ -1,13 +1,10 @@
 // App.js
 import React, { Component } from 'react';
 import Header from '../src/components/Header';
-import AllList from './components/AllList';
-import YourList from './components/YourList';
 import Navbar from './components/Navbar';
+import YourList from './components/YourList'
 import firebase from 'firebase';
 import 'firebase/firestore';
-
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 const liff = window.liff;
 
@@ -19,7 +16,9 @@ class App extends Component {
       displayName: '',
       userId: '',
       pictureUrl: '',
-      statusMessage: ''
+      groupId: '',
+      statusMessage: '',
+      
     };
 
 
@@ -43,34 +42,28 @@ class App extends Component {
   initialize() {
     liff.init(async (data) => {
       let profile = await liff.getProfile();
+      const groupId = await data.context.groupId;
       this.setState({
         displayName: profile.displayName,
         userId: profile.userId,
         pictureUrl: profile.pictureUrl,
-        statusMessage: profile.statusMessage
+        statusMessage: profile.statusMessage,
+        groupId: groupId
       });
     });
   }
 
   render() {
-    const { children } = this.props
+    const {children} = this.props;
+    
     return (
       <div className="container">
+        
         <Header />
-        <Navbar />
+        <Navbar></Navbar>
         {children}
       </div>
-      //   <Router >
-      //   <div className="container">
-      //     <Header/>
-      //     <Navbar/>
-      //     <h1>HELLO</h1>
-      //     {/* <AllList/> */}
-      //     <Route path ="/" component={App}/>
-      //     <Route path = "/AllList" component={AllList}/>
-      //     <Route path = "/YourList" component={YourList}/>
-      //   </div>
-      // </Router>
+
     );
   }
 }

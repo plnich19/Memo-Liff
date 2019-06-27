@@ -4,13 +4,13 @@ import ReactDOM from 'react-dom';
 import Modal from 'react-responsive-modal';
 import './YourList.css';
 
-const liff = window.liff;
+// const liff = window.liff;
 
 class YourList extends Component {
 
     constructor(props) {
         super(props);
-        this.initialize = this.initialize.bind(this);
+        // this.initialize = this.initialize.bind(this);
         this.state = {
             getYourList: [],
             displayName: '',
@@ -19,25 +19,30 @@ class YourList extends Component {
             statusMessage: '',
             openEdit: false,
             openDelete: false,
-            checked:false,
-            openCheck:false
+            checked: false,
+            openCheck: false,
+            // groupId:''
         };
 
     }
 
-    initialize() {
-        liff.init(async (data) => {
-            let profile = await liff.getProfile();
-            this.setState({
-                displayName: profile.displayName,
-                userId: profile.userId,
-                pictureUrl: profile.pictureUrl,
-                statusMessage: profile.statusMessage
-            });
-        });
-    }
+    // initialize() {
+    //     liff.init(async (data) => {
+    //         const groupId = await data.context.groupId;
+    //         let profile = await liff.getProfile();
+    //         this.setState({
+    //             displayName: profile.displayName,
+    //             userId: profile.userId,
+    //             pictureUrl: profile.pictureUrl,
+    //             statusMessage: profile.statusMessage,
+    //             groupId: groupId
+    //         });
+    //     });
+    // }
 
     componentDidMount() {
+        console.log(this.props)
+        // window.addEventListener('load', this.initialize);
         let instantLists = []
         const ref = firebase.firestore().collection('data').doc('groupId-fadgeagsdfreasdgfgesdf').collection('tasks');
         const query = ref.where('assignee', 'array-contains', this.state.displayName).get()
@@ -80,14 +85,14 @@ class YourList extends Component {
     };
 
     handleCheckboxChange = event =>
-    this.setState({ checked: event.target.checked });
+        this.setState({ checked: event.target.checked });
 
-    changeCheck = () =>{
-        if(this.state.checked === false){
-            this.setState({checked:true,openCheck: false })    
+    changeCheck = () => {
+        if (this.state.checked === false) {
+            this.setState({ checked: true, openCheck: false })
         }
-        if(this.state.checked === true){
-            this.setState({checked:false,openCheck: false})
+        if (this.state.checked === true) {
+            this.setState({ checked: false, openCheck: false })
         }
     }
 
@@ -95,7 +100,7 @@ class YourList extends Component {
         return (
             <div>
 
-                <div>
+                {/* <div>
                     <h1>Your Tasks</h1>
                     <table className='alllisttable'>
                         {
@@ -106,8 +111,8 @@ class YourList extends Component {
                             })
                         }
                     </table>
-                </div>
-
+                </div> */}
+                
                 <button className='editModal' onClick={this.onOpenEditModal}>Edit</button>
                 <Modal open={this.state.openEdit} onClose={this.onCloseEditModal} center>
                     <h2>Edit</h2>
@@ -117,7 +122,7 @@ class YourList extends Component {
                         <p>Responsibility: </p>
                         <input type="text" />
                         <div></div>
-                        </form>
+                    </form>
                     <button>Update</button>
                     <button onClick={this.onCloseEditModal}>Cancel</button>
                 </Modal>
@@ -126,18 +131,18 @@ class YourList extends Component {
                 <Modal open={this.state.openDelete} onClose={this.onCloseDeleteModal} center>
                     <h2>Delete!!!</h2>
                     <div>
-                    <p className='deleteText'>Are you sure you want to delete this task?</p>
-                    
+                        <p className='deleteText'>Are you sure you want to delete this task?</p>
+
                         <button>Delete</button>
                         <button onClick={this.onCloseDeleteModal}>Cancel</button>
                     </div>
                 </Modal>
 
                 <label className='checkboxContainer'>
-                <span className='checkboxText'>Done?</span>
-                <input type='checkbox' className='checkDone'
-                    checked={this.state.checked}
-                    onClick={this.onOpenCheckModal}
+                    <span className='checkboxText'>Done?</span>
+                    <input type='checkbox' className='checkDone'
+                        checked={this.state.checked}
+                        onClick={this.onOpenCheckModal}
                     // onChange={this.handleCheckboxChange}
                     ></input>
                 </label>
