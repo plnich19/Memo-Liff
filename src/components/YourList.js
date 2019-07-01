@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import Modal from 'react-responsive-modal';
 import './YourList.css';
 
-const liff = window.liff;
+// const liff = window.liff;
 
 class YourList extends Component {
 
@@ -28,34 +28,34 @@ class YourList extends Component {
     }
 
 
-    liffSuccess = (data) => {
-        console.log(data)
-        const groupId = data.context.groupId;
-        let profile = liff.getProfile();
-        this.setState({
-            liffData: data,
-            displayName: profile.displayName,
-            userId: profile.userId,
-            pictureUrl: profile.pictureUrl,
-            statusMessage: profile.statusMessage,
-        groupId: groupId 
-    });
-}
+//     liffSuccess = (data) => {
+//         console.log(data)
+//         const groupId = data.context.groupId;
+//         let profile = liff.getProfile();
+//         this.setState({
+//             liffData: data,
+//             displayName: profile.displayName,
+//             userId: profile.userId,
+//             pictureUrl: profile.pictureUrl,
+//             statusMessage: profile.statusMessage,
+//             // groupId: groupId 
+//     });
+// }
 
-liffError = (err) => {
-    console.error("liffError")
-    this.setState({
-        liffData: err
-    });
-}
+// liffError = (err) => {
+//     console.error("liffError")
+//     this.setState({
+//         liffData: err
+//     });
+// }
 
 
-initialize = () => {
-    liff.init(this.liffSuccess, this.liffError)
-}
+// initialize = () => {
+//     liff.init(this.liffSuccess, this.liffError)
+// }
 
 componentDidMount() {
-    window.addEventListener('load', this.initialize);
+    // window.addEventListener('load', this.initialize);
     // let instantLists = []
     // const ref = firebase.firestore().collection('data').doc('groupId-fadgeagsdfreasdgfgesdf').collection('tasks');
     // const query = ref.where('assignee', 'array-contains', this.state.displayName).get()
@@ -127,7 +127,6 @@ render() {
                     </table>
                 </div> */}
             <p>17:56</p>
-            <p>{liffData}</p>
             <p>{this.state.displayName}</p>
             <button className='editModal' onClick={this.onOpenEditModal}>Edit</button>
             <Modal open={this.state.openEdit} onClose={this.onCloseEditModal} center>

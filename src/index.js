@@ -7,18 +7,18 @@ import AllList from './components/AllList';
 import YourList from './components/YourList';
 import * as serviceWorker from './serviceWorker';
 
-const routing = (
-    <Router >
-         <App>
-        <Route exact path ="/" component={AllList}/>
-        <Route path = "/AllList" component={AllList}/>
-        <Route path = "/YourList" component={YourList}/>
-        </App>
-    </Router>
+// const routing = (
+//     <Router >
+//          <App>
+//         <Route exact path ="/" component={AllList}/>
+//         <Route path = "/AllList" component={AllList}/>
+//         <Route path = "/YourList" component={YourList}/>
+//         </App>
+//     </Router>
 
-)
+// 
 
-ReactDOM.render(routing, document.getElementById('root'));
+ReactDOM.render(<App/>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
