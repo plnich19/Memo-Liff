@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import firebase from 'firebase';
+// import firebase from 'firebase';
 import './AllList.css';
 class AllList extends Component {
 
@@ -7,40 +7,45 @@ class AllList extends Component {
         super(props);
         this.state = {
             getList: []
-
         };
-
     }
 
     componentDidMount() {
-        let instantLists = []
-        const ref = firebase.firestore().collection('data').doc('groupId-fadgeagsdfreasdgfgesdf').collection('tasks');
-        const query = ref.get()
-            .then(snapshot => {
-                snapshot.forEach(doc => {
-                    instantLists.push(doc.id)
-                });
-                console.log(instantLists, 'instantLists')
-                this.setState({
-                    getList: instantLists
-                })
-            })
-            .catch(err => {
-                console.log('Error getting documents', err);
-            });
-        console.log(this.state.getList)
+        const {context} = this.props
+        console.log('AllList componentDidMount props',this.props)
+        console.log('AllList componentDidMount state',this.state)
+        this.getData(context)
+    }
+
+    getData = (context) =>{
+        console.log('getData context' ,context)
+        const action = `getTasks`
+        const groupId = context.groupId
+        const API = `https://asia-east2-memo-chatbot.cloudfunctions.net/DataAPI/?action=${action}&groupId=${groupId}`
+        fetch(API)
+        .then(response => response.json())
+        .then(data => {
+            console.log('getData afterFetch',data)
+            this.setState({ getList:data })
+        });
     }
 
     render() {
-
         return (
             <div>
                 <h1>All Tasks</h1>
                 <table className='alllisttable'>
                     {
-                        this.state.getList.map((id) => {
+                        this.state.getList.map((task) => {
+                            const {
+                                taskId='',
+                                title='',
+                                status='',
+                                assignee=[],
+                                createtime=''
+                            } = task
                             return (
-                                <tr>{id}</tr>
+                                <tr key={`allTasks-${taskId}`}><td>- {`${title} [${status}]`}</td></tr>
                             )
                         })
                     }

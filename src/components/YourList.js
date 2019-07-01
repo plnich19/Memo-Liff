@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import firebase from 'firebase';
-import ReactDOM from 'react-dom';
+// import firebase from 'firebase';
+// import ReactDOM from 'react-dom';
 import Modal from 'react-responsive-modal';
 import './YourList.css';
 
@@ -54,23 +54,25 @@ initialize = () => {
     liff.init(this.liffSuccess, this.liffError)
 }
 
+getData = (context) =>{
+    console.log('getData context' ,context)
+    const action = `getYourTask`
+    const groupId = context.groupId
+    const userId = context.userId
+    const API = `https://asia-east2-memo-chatbot.cloudfunctions.net/DataAPI/?action=${action}&groupId=${groupId}&userId=${userId}`
+    fetch(API)
+    .then(response => response.json())
+    .then(data => {
+        console.log('getData afterFetch',data)
+        this.setState({ getYourList:data })
+    });
+}
+
 componentDidMount() {
-    window.addEventListener('load', this.initialize);
-    // let instantLists = []
-    // const ref = firebase.firestore().collection('data').doc('groupId-fadgeagsdfreasdgfgesdf').collection('tasks');
-    // const query = ref.where('assignee', 'array-contains', this.state.displayName).get()
-    //     .then(snapshot => {
-    //         snapshot.forEach(doc => {
-    //             instantLists.push(doc.id)
-    //         });
-    //         console.log(instantLists, 'instantLists')
-    //         this.setState({
-    //             getYourList: instantLists
-    //         })
-    //     })
-    //     .catch(err => {
-    //         console.log('Error getting documents', err);
-    //     });
+    const {context} = this.props
+    console.log('YourList componentDidMount props',this.props)
+    console.log('YourList componentDidMount state',this.state)
+    this.getData(context)
 }
 
 onOpenEditModal = () => {
@@ -110,25 +112,35 @@ changeCheck = () => {
 }
 
 render() {
-    const { liffData } = this.state
+    const { context } = this.props
+    const {
+        displayName,
+        groupId,
+        pictureUrl
+    } = context
     return (
         <div>
 
-            {/* <div>
-                    <h1>Your Tasks</h1>
-                    <table className='alllisttable'>
-                        {
-                            this.state.getYourList.map((id) => {
-                                return (
-                                    <tr>{id}</tr>
-                                )
-                            })
-                        }
-                    </table>
-                </div> */}
-            <p>17:56</p>
-            <p>{liffData}</p>
-            <p>{this.state.displayName}</p>
+            <div>
+                <h1>Your Tasks ({displayName})</h1>
+                <table className='alllisttable'>
+                {
+                    this.state.getYourList.map((task) => {
+                        const {
+                            taskId='',
+                            title='',
+                            status='',
+                            assignee=[],
+                            createtime=''
+                        } = task
+                        return (
+                            <tr key={`allTasks-${taskId}`}><td>- {`${title} [${status}]`}</td></tr>
+                        )
+                    })
+                }
+                </table>
+            </div>
+
             <button className='editModal' onClick={this.onOpenEditModal}>Edit</button>
             <Modal open={this.state.openEdit} onClose={this.onCloseEditModal} center>
                 <h2>Edit</h2>

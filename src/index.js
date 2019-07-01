@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
+import { Route,
+        //  Link, 
+         BrowserRouter as Router 
+        } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import AllList from './components/AllList';
@@ -11,8 +14,6 @@ const routing = (
     <Router >
          <App>
         <Route exact path ="/" component={AllList}/>
-        <Route path = "/AllList" component={AllList}/>
-        <Route path = "/YourList" component={YourList}/>
         </App>
     </Router>
 
