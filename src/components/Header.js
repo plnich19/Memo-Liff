@@ -6,7 +6,7 @@ class Header extends Component {
   render() {
     return (
       <div className= 'title'>
-        Bot
+        P'Note
       </div>
     );
    }

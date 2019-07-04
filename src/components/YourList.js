@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 // import ReactDOM from 'react-dom';
 import Modal from 'react-responsive-modal';
 import './YourList.css';
+import axios from "axios";
 
 const liff = window.liff;
 
@@ -10,180 +11,245 @@ class YourList extends Component {
 
     constructor(props) {
         super(props);
-        // this.initialize = this.initialize.bind(this);
         this.state = {
-            liffData: '',
             getYourList: [],
-            displayName: '',
-            userId: '',
-            pictureUrl: '',
-            statusMessage: '',
             openEdit: false,
             openDelete: false,
             checked: false,
             openCheck: false,
-            groupId:''
+            groupId: '',
+            dataFetchMsg: 'no data',
+            title: '',
+            datetime: ''
         };
-
     }
 
+    getData = (context) => {
+        console.log('getData context', context)
+        const action = `getYourTask`
+        const groupId = context.groupId
+        const userId = context.userId
+        fetch(`https://asia-east2-memo-chatbot.cloudfunctions.net/DataAPI/?action=${action}&groupId=${groupId}&userId=${userId}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log('getData afterFetch', data)
+                this.setState({ getYourList: data })
+            })
+    }
 
-    liffSuccess = (data) => {
-        console.log(data)
-        const groupId = data.context.groupId;
-        let profile = liff.getProfile();
+    submitUpdateTask = () => {
+        const { context } = this.props
+        this.updateStatus(context);
+        this.onCloseEditModal();
+    }
+
+    onTitleChanged = (event) => {
+        console.log('onTitleChanged', event.target.value)
         this.setState({
-            liffData: data,
-            displayName: profile.displayName,
-            userId: profile.userId,
-            pictureUrl: profile.pictureUrl,
-            statusMessage: profile.statusMessage,
-        groupId: groupId 
-    });
-}
+            modalTitle: event.target.value
+        });
+    };
 
-liffError = (err) => {
-    console.error("liffError")
-    this.setState({
-        liffData: err
-    });
-}
+    onDateTimeChanged = (event) => {
+        console.log('onDateTimeChanged', event.target.value)
+        this.setState({
+            modalDatetime: event.target.value
+        });
+    };
 
-
-initialize = () => {
-    liff.init(this.liffSuccess, this.liffError)
-}
-
-getData = (context) =>{
-    console.log('getData context' ,context)
-    const action = `getYourTask`
-    const groupId = context.groupId
-    const userId = context.userId
-    const API = `https://asia-east2-memo-chatbot.cloudfunctions.net/DataAPI/?action=${action}&groupId=${groupId}&userId=${userId}`
-    fetch(API)
-    .then(response => response.json())
-    .then(data => {
-        console.log('getData afterFetch',data)
-        this.setState({ getYourList:data })
-    });
-}
-
-componentDidMount() {
-    const {context} = this.props
-    console.log('YourList componentDidMount props',this.props)
-    console.log('YourList componentDidMount state',this.state)
-    this.getData(context)
-}
-
-onOpenEditModal = () => {
-    this.setState({ openEdit: true });
-};
-
-onCloseEditModal = () => {
-    this.setState({ openEdit: false });
-};
-
-onOpenDeleteModal = () => {
-    this.setState({ openDelete: true });
-};
-
-onCloseDeleteModal = () => {
-    this.setState({ openDelete: false });
-};
-
-onOpenCheckModal = () => {
-    this.setState({ openCheck: true });
-};
-
-onCloseCheckModal = () => {
-    this.setState({ openCheck: false });
-};
-
-handleCheckboxChange = event =>
-    this.setState({ checked: event.target.checked });
-
-changeCheck = () => {
-    if (this.state.checked === false) {
-        this.setState({ checked: true, openCheck: false })
+    updateStatus = (context) => {
+        const groupId = context.groupId
+        const { openTaskId, modalTitle, modalDatetime,checked } = this.state
+        const taskId = openTaskId
+        console.log(taskId, 'eeee')
+        const url = `https://asia-east2-memo-chatbot.cloudfunctions.net/DataAPI/?action=updateTask&groupId=${groupId}&taskId=${taskId}`
+        const bodyData = {
+            title: modalTitle,
+            datetime: modalDatetime,
+            status: checked
+        };
+        console.log('ff', bodyData)
+        axios
+            .post(url, bodyData)
+            .then((response) => {
+                console.log(response);
+                this.getData(context)
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
-    if (this.state.checked === true) {
-        this.setState({ checked: false, openCheck: false })
+
+    submitDeleteTask = () => {
+        const { context } = this.props
+        this.deleteFetch(context)
+        this.onCloseDeleteModal()
     }
-}
 
-render() {
-    const { context } = this.props
-    const {
-        displayName,
-        groupId,
-        pictureUrl
-    } = context
-    return (
-        <div>
+    deleteFetch(context) {
+        const groupId = context.groupId
+        console.log(groupId, 'www')
+        const taskId = this.state.thisTaskId
+        console.log(taskId, '1www')
+        const url = `https://asia-east2-memo-chatbot.cloudfunctions.net/DataAPI/?action=deleteTask&groupId=${groupId}&taskId=${taskId}`
+        axios
+            .post(url)
+            .then((response) => {
+                console.log(response);
+                this.getData(context)
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 
-            <div>
-                <h1>Your Tasks ({displayName})</h1>
-                <table className='alllisttable'>
+    componentWillMount() {
+        const { context } = this.props
+        this.getData(context)
+    }
+
+    componentDidMount = () => {
+
+    }
+
+    onOpenEditModal = (taskId) => (e) => {
+        const { getYourList } = this.state
+        console.log('onOpenEditModal getYourList', getYourList)
+        const selectedTask = getYourList.find((task) => {
+            return task.taskId === taskId
+        })
+        console.log('onOpenEditModal selectedTask', selectedTask)
+        this.setState({
+            openEdit: true,
+            openTaskId: taskId,
+            modalTitle: selectedTask.title,
+            modalDatetime: selectedTask.datetime,
+        });
+    };
+
+    onCloseEditModal = () => {
+        this.setState({ openEdit: false });
+    };
+
+    onOpenDeleteModal = (taskId) => (e) => {
+        const { getYourList } = this.state
+        console.log('onOpenDeleteModal getYourList', getYourList)
+        const selectedTask = getYourList.find((task) => {
+            return task.taskId === taskId
+        })
+        this.setState({
+            openDelete: true,
+            thisTaskId: taskId
+        });
+    };
+
+    onCloseDeleteModal = () => {
+        this.setState({ openDelete: false });
+    };
+
+    onOpenCheckModal = (task) => (e) =>{
+        const { taskId } = task
+        // const { getYourList } = this.state
+        // console.log('onOpenCheckModal getYourList', getYourList)
+        // const selectedTask = getYourList.find((curTask) => {
+        //     return curTask.taskId === taskId
+        // })
+        this.setState({
+            openCheck: true,
+            openTaskId: taskId,
+            checked: !task.status
+        });
+        console.log(this.state.checkThis,'bb')
+    };
+
+    onCloseCheckModal = () => {
+        this.setState({ openCheck: false });
+    };
+
+    sumitCheck = () => {
+        this.setState({ openCheck: false })
+        this.updateStatus(this.props.context)
+    }
+
+    yourTasksTable = () => {
+        return (
+            <table>
+                <Modal open={this.state.openEdit} onClose={this.onCloseEditModal} center>
+                    <h2>Edit</h2>
+                    <form>
+                        <p>Tasks: </p>
+                        <input type="text" name='title' value={this.state.modalTitle} onChange={this.onTitleChanged} />
+                        <p>datetime: </p>
+                        <input type="text" name='datetime' value={this.state.modalDatetime} onChange={this.onDateTimeChanged} />
+                        <div></div>
+                    </form>
+                    <button onClick={event => { this.submitUpdateTask(this.state.openTaskId) }}>Update</button>
+                    <button onClick={this.onCloseEditModal}>Cancel</button>
+                </Modal>
+                <Modal open={this.state.openDelete} onClose={this.onCloseDeleteModal} center>
+                    <h2>Delete!!!</h2>
+                    <div>
+                        <p className='deleteText'>Are you sure you want to delete this task?</p>
+                        <button onClick={event => { this.submitDeleteTask(this.state.openTaskId) }}>Delete</button>
+                        <button onClick={this.onCloseDeleteModal}>Cancel</button>
+                    </div>
+                </Modal>
+                <Modal open={this.state.openCheck} onClose={this.onCloseCheckModal} center>
+                    <h2>Status</h2>
+                    <p className='checkText'>Are you sure you want to change status?</p>
+                    <div>
+                        <button onClick={this.sumitCheck}>Yes</button>
+                        <button onClick={this.onCloseCheckModal}>No</button>
+                    </div>
+                </Modal>
                 {
                     this.state.getYourList.map((task) => {
-                        const {
-                            taskId='',
-                            title='',
-                            status='',
-                            assignee=[],
-                            createtime=''
-                        } = task
                         return (
-                            <tr key={`allTasks-${taskId}`}><td>- {`${title} [${status}]`}</td></tr>
+                            <tr key={task.taskId}>
+                                <td>{task.title}</td>
+                                {/* <td>{task.assignee}</td> */}
+                                <td>{task.datetime}</td>
+                                <td>
+                                    <button className='editModal' onClick={this.onOpenEditModal(task.taskId)}>Edit</button>
+                                </td>
+                                <td>
+                                    <button className='deleteModal' onClick={this.onOpenDeleteModal(task.taskId)}>Delete</button>
+                                </td>
+                                <td>status: {`${task.status}`}</td>
+                                <td>
+                                    <label className='checkboxContainer'>
+                                        <input type='checkbox' className='checkDone'
+                                            checked={task.status}
+                                            onClick={this.onOpenCheckModal(task)}>
+                                        </input>
+                                    </label>
+                                </td>
+                            </tr>
                         )
                     })
                 }
-                </table>
+            </table>
+        )
+    }
+
+    render() {
+        const { getYourList, dataFetchMsg } = this.state
+        return (
+            <div>
+                <div>
+                    <h1>Your Tasks </h1>
+                    {
+                        getYourList.length > 0 ?
+                            <table >
+                                <tbody>
+                                    {this.yourTasksTable()}
+                                </tbody>
+                            </table> :
+                            <h1>{dataFetchMsg}</h1>
+                    }
+                </div>
             </div>
-
-            <button className='editModal' onClick={this.onOpenEditModal}>Edit</button>
-            <Modal open={this.state.openEdit} onClose={this.onCloseEditModal} center>
-                <h2>Edit</h2>
-                <form>
-                    <p>Tasks: </p>
-                    <input type="text" />
-                    <p>Responsibility: </p>
-                    <input type="text" />
-                    <div></div>
-                </form>
-                <button>Update</button>
-                <button onClick={this.onCloseEditModal}>Cancel</button>
-            </Modal>
-
-            <button className='deleteModal' onClick={this.onOpenDeleteModal}>Delete</button>
-            <Modal open={this.state.openDelete} onClose={this.onCloseDeleteModal} center>
-                <h2>Delete!!!</h2>
-                <div>
-                    <p className='deleteText'>Are you sure you want to delete this task?</p>
-
-                    <button>Delete</button>
-                    <button onClick={this.onCloseDeleteModal}>Cancel</button>
-                </div>
-            </Modal>
-
-            <label className='checkboxContainer'>
-                <span className='checkboxText'>Done?</span>
-                <input type='checkbox' className='checkDone'
-                    checked={this.state.checked}
-                    onClick={this.onOpenCheckModal}
-                // onChange={this.handleCheckboxChange}
-                ></input>
-            </label>
-            <Modal open={this.state.openCheck} onClose={this.onCloseCheckModal} center>
-                <h2>Status</h2>
-                <p className='checkText'>Are you sure you really done this task?</p>
-                <div>
-                    <button onClick={this.changeCheck}>Yes</button>
-                    <button onClick={this.onCloseCheckModal}>No</button>
-                </div>
-            </Modal>
-        </div>
-    );
-}
+        );
+    }
 }
 export default YourList;

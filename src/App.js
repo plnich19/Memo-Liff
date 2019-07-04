@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 // import YourList from './components/YourList'
 import firebase from 'firebase';
 import 'firebase/firestore';
+import './App.css'
 
 
 import AllList from './components/AllList';
@@ -16,7 +17,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      page:'AllList',
+      stage: 'YourList',
       context:null,
     };
     var config = {
@@ -41,7 +42,7 @@ class App extends Component {
             userId: 'U58bdafa345cc971e0a1fdfb2b199ba7a',
             pictureUrl: 'https://profile.line-scdn.net/0h4AhU0SMea25VLEEbfMsUOWlpZQMiAm0mLR0jWnEoYAt6Sy8_OxonCHglNQwvTyQ_aUkiWHh4YV4q',
             statusMessage: 'status',
-            groupId: 'Ce938b6c2ba40812b0afa36e11078ec56'
+            groupId: 'groupId-fadgeagsdfreasdgfgesdf'
           }
       }
     );
@@ -68,22 +69,14 @@ class App extends Component {
     return ( 
       <div className="container">
         <Header />
-        <div>
-          <button className='allTaskButton' onClick={()=>{
-            this.setState({
-              page:'AllList'
-            })
-          }}> All Tasks List</button>
-          <button className='yourTaskButton' onClick={()=>{
-            this.setState({
-              page:'YourList'
-            })
-          }}> Your Tasks List </button>
+        <div className="nav">
+          <div onClick={() => { this.setState({stage:'AllList'}) }}>All List</div>
+          <div onClick={() => { this.setState({stage:'YourList'}) }}>YourList</div>
         </div>
-
-        {this.state.page === 'AllList' ? 
-          <AllList context={this.state.context}/>: <YourList context={this.state.context}/>
-        }
+        <div className="container">
+          {this.state.stage === 'AllList' && <AllList context={this.state.context}/>}
+          {this.state.stage === 'YourList' && <YourList context={this.state.context}/>}
+        </div>
       </div>
     );
   }

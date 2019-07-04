@@ -1,8 +1,16 @@
-.alllisttable{
-    margin-left: 40%;
-}
-
 h1{
     font-size: 50px;
     text-align: center;
 }
+
+.allListTable{
+    border: 1px solid black;
+    border-collapse: collapse;
+    
+}
+
+.allListTable td, .allListTable th{
+    border: 1px solid black;
+    text-align: left;
+    padding-left: 3px;
+  }
