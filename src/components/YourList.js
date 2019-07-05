@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-// import firebase from 'firebase';
-// import ReactDOM from 'react-dom';
 import Modal from 'react-responsive-modal';
 import './YourList.css';
 import axios from "axios";
+import moment from 'moment'
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 
 const liff = window.liff;
 
@@ -20,7 +21,8 @@ class YourList extends Component {
             groupId: '',
             dataFetchMsg: 'no data',
             title: '',
-            datetime: ''
+            datetime: '',
+            modalDatetime: ''
         };
     }
 
@@ -50,16 +52,17 @@ class YourList extends Component {
         });
     };
 
-    onDateTimeChanged = (event) => {
-        console.log('onDateTimeChanged', event.target.value)
+    onDateTimeChanged = (date) => {
+        const dateToTimStamp = new Date(date).getTime()
         this.setState({
-            modalDatetime: event.target.value
+            modalDatetime: dateToTimStamp
         });
+        console.log('mm', dateToTimStamp)
     };
 
     updateStatus = (context) => {
         const groupId = context.groupId
-        const { openTaskId, modalTitle, modalDatetime,checked } = this.state
+        const { openTaskId, modalTitle, modalDatetime, checked } = this.state
         const taskId = openTaskId
         console.log(taskId, 'eeee')
         const url = `https://asia-east2-memo-chatbot.cloudfunctions.net/DataAPI/?action=updateTask&groupId=${groupId}&taskId=${taskId}`
@@ -147,7 +150,7 @@ class YourList extends Component {
         this.setState({ openDelete: false });
     };
 
-    onOpenCheckModal = (task) => (e) =>{
+    onOpenCheckModal = (task) => (e) => {
         const { taskId } = task
         // const { getYourList } = this.state
         // console.log('onOpenCheckModal getYourList', getYourList)
@@ -159,7 +162,7 @@ class YourList extends Component {
             openTaskId: taskId,
             checked: !task.status
         });
-        console.log(this.state.checkThis,'bb')
+        console.log(this.state.checkThis, 'bb')
     };
 
     onCloseCheckModal = () => {
@@ -174,27 +177,35 @@ class YourList extends Component {
     yourTasksTable = () => {
         return (
             <table>
-                <Modal open={this.state.openEdit} onClose={this.onCloseEditModal} center>
+                <Modal className='Modal' open={this.state.openEdit} onClose={this.onCloseEditModal} center>
                     <h2>Edit</h2>
                     <form>
                         <p>Tasks: </p>
                         <input type="text" name='title' value={this.state.modalTitle} onChange={this.onTitleChanged} />
-                        <p>datetime: </p>
-                        <input type="text" name='datetime' value={this.state.modalDatetime} onChange={this.onDateTimeChanged} />
-                        <div></div>
+                        <p>Datetime: </p>
+                        {/* <input type="text" name='datetime' value={this.state.modalDatetime} onChange={this.onDateTimeChanged} /> */}
+                        <DatePicker
+                            selected={this.state.modalDatetime}
+                            onChange={this.onDateTimeChanged}
+                            showTimeSelect
+                            timeFormat="HH:mm"
+                            timeIntervals={15}
+                            dateFormat="MMMM d, yyyy h:mm aa"
+                            timeCaption="time"
+                        />
                     </form>
-                    <button onClick={event => { this.submitUpdateTask(this.state.openTaskId) }}>Update</button>
-                    <button onClick={this.onCloseEditModal}>Cancel</button>
+                    <button className='insideModalButton' onClick={event => { this.submitUpdateTask(this.state.openTaskId) }}>Update</button>
+                    <button className='insideModalButton' onClick={this.onCloseEditModal}>Cancel</button>
                 </Modal>
-                <Modal open={this.state.openDelete} onClose={this.onCloseDeleteModal} center>
-                    <h2>Delete!!!</h2>
+                <Modal className='Modal' open={this.state.openDelete} onClose={this.onCloseDeleteModal} center>
+                    <h2 className='deleteTitle'>Delete!!!</h2>
                     <div>
                         <p className='deleteText'>Are you sure you want to delete this task?</p>
                         <button onClick={event => { this.submitDeleteTask(this.state.openTaskId) }}>Delete</button>
                         <button onClick={this.onCloseDeleteModal}>Cancel</button>
                     </div>
                 </Modal>
-                <Modal open={this.state.openCheck} onClose={this.onCloseCheckModal} center>
+                <Modal className='Modal' open={this.state.openCheck} onClose={this.onCloseCheckModal} center>
                     <h2>Status</h2>
                     <p className='checkText'>Are you sure you want to change status?</p>
                     <div>
@@ -205,26 +216,28 @@ class YourList extends Component {
                 {
                     this.state.getYourList.map((task) => {
                         return (
-                            <tr key={task.taskId}>
-                                <td>{task.title}</td>
-                                {/* <td>{task.assignee}</td> */}
-                                <td>{task.datetime}</td>
-                                <td>
-                                    <button className='editModal' onClick={this.onOpenEditModal(task.taskId)}>Edit</button>
-                                </td>
-                                <td>
-                                    <button className='deleteModal' onClick={this.onOpenDeleteModal(task.taskId)}>Delete</button>
-                                </td>
-                                <td>status: {`${task.status}`}</td>
-                                <td>
-                                    <label className='checkboxContainer'>
-                                        <input type='checkbox' className='checkDone'
-                                            checked={task.status}
-                                            onClick={this.onOpenCheckModal(task)}>
-                                        </input>
-                                    </label>
-                                </td>
-                            </tr>
+                            <div>
+                                <tr key={task.taskId}>
+                                    <td>{task.title}</td>
+                                    {/* <td>{task.assignee}</td> */}
+                                    <td>{moment(task.datetime).format('MMMM Do YYYY, h:mm:ss a')}</td>
+                                    <td>
+                                        <button className='editModalButton' onClick={this.onOpenEditModal(task.taskId)}>Edit</button>
+                                    </td>
+                                    <td>
+                                        <button className='deleteModalButton' onClick={this.onOpenDeleteModal(task.taskId)}>Delete</button>
+                                    </td>
+                                    {/* <td>status: {`${task.status}`}</td> */}
+                                    <td>
+                                        <label className='checkboxContainer'>
+                                            <input type='checkbox' className='checkDone'
+                                                checked={task.status}
+                                                onClick={this.onOpenCheckModal(task)}>
+                                            </input>
+                                        </label>
+                                    </td>
+                                </tr>
+                            </div>
                         )
                     })
                 }
@@ -235,19 +248,17 @@ class YourList extends Component {
     render() {
         const { getYourList, dataFetchMsg } = this.state
         return (
-            <div>
-                <div>
-                    <h1>Your Tasks </h1>
-                    {
-                        getYourList.length > 0 ?
-                            <table >
-                                <tbody>
-                                    {this.yourTasksTable()}
-                                </tbody>
-                            </table> :
-                            <h1>{dataFetchMsg}</h1>
-                    }
-                </div>
+            <div className='yourList'>
+                <h1>Your Tasks </h1>
+                {
+                    getYourList.length > 0 ?
+                        <table className='yourListTable'>
+                            <tbody>
+                                {this.yourTasksTable()}
+                            </tbody>
+                        </table> :
+                        <h1>{dataFetchMsg}</h1>
+                }
             </div>
         );
     }

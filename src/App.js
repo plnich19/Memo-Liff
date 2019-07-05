@@ -17,8 +17,17 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      stage: 'YourList',
-      context:null,
+      stage: 'AllList',
+      getProfileStatus: '',
+      liffInitStatus: '',
+      context: {
+        displayName: '',
+        userId: '',
+        pictureUrl: '',
+        statusMessage: '',
+        groupId: ''
+      },
+
     };
     var config = {
       apiKey: "AIzaSyCmCs0fRWBIGywo2XEwYV08rtyIqk8Kcdw",
@@ -33,49 +42,75 @@ class App extends Component {
 
   }
 
+  // initialize = () => {
+  //   liff.init(
+  //     (data) => {
+  //       const groupId = data.context.groupId;
+  //       liff.getProfile()
+  //       .then((profile) => {
+  //         this.setState({
+  //           context: {
+  //             displayName: profile.displayName,
+  //             userId: profile.userId,
+  //             pictureUrl: profile.pictureUrl,
+  //             statusMessage: profile.statusMessage,
+  //             groupId: groupId
+  //           },
+  //           getProfileStatus: 'success'
+  //         });
+  //       })
+  //       .catch((err) => {
+  //         this.setState({
+  //           getProfileStatus: 'error'
+  //         })
+  //       })
+  //     },
+  //     (err) => {
+  //       this.setState({
+  //         liffInitStatus: 'error'
+  //       })
+  //     }
+  //   );
+  // }
+
   componentDidMount() {
-    window.addEventListener('load', this.initialize);
+    // window.addEventListener('load', this.initialize);
     this.setState(
       {
         context:{
-            displayName: 'พิช',
-            userId: 'U58bdafa345cc971e0a1fdfb2b199ba7a',
+            displayName: 'J',
+            userId: 'Ud3f6ed0ecf179f61d9c325caec2ace0a',
             pictureUrl: 'https://profile.line-scdn.net/0h4AhU0SMea25VLEEbfMsUOWlpZQMiAm0mLR0jWnEoYAt6Sy8_OxonCHglNQwvTyQ_aUkiWHh4YV4q',
             statusMessage: 'status',
-            groupId: 'groupId-fadgeagsdfreasdgfgesdf'
+            groupId: 'Ce938b6c2ba40812b0afa36e11078ec56'
           }
       }
     );
 
   }
 
-  liffSuccess = () => {
-      console.log("liffSuccess")
-  }
-
-  liffError = () => {
-      console.log("liffError")
-  }
-
-  initialize = (props) => {
-    console.log('onLoadInitialize',props)
-    liff.init(this.liffSuccess, this.liffError)
-  }
-
   render() {
-    console.log('App props',this.props)
-    console.log('App state',this.state)
-    if(!this.state.context){ return '';}
-    return ( 
+    console.log('App props', this.props)
+    console.log('App state', this.state)
+    const { liffInitStatus, getProfileStatus, stage, context } = this.state
+    if (!context.displayName) {
+      return (
+        <h1>Waiting... data from LINE API</h1>
+      ) 
+    }
+    if (liffInitStatus === 'error') return <h1>liffInitStatus ERROR !!!!</h1>
+    if (getProfileStatus === 'error') return <h1>getProfile ERROR !!!!</h1>
+    
+    return (
       <div className="container">
         <Header />
         <div className="nav">
-          <div onClick={() => { this.setState({stage:'AllList'}) }}>All List</div>
-          <div onClick={() => { this.setState({stage:'YourList'}) }}>YourList</div>
-        </div>
+          <div onClick={() => { this.setState({ stage: 'AllList' }) }}>All List</div>
+          <div onClick={() => { this.setState({ stage: 'YourList' }) }}>YourList</div>
+        </div> 
         <div className="container">
-          {this.state.stage === 'AllList' && <AllList context={this.state.context}/>}
-          {this.state.stage === 'YourList' && <YourList context={this.state.context}/>}
+          {stage === 'AllList' && <AllList context={context} />}
+          {stage === 'YourList' && <YourList context={context} />}
         </div>
       </div>
     );

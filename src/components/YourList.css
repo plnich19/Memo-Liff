@@ -7,17 +7,24 @@ h2{
     font-size: 40px;
 }
 
-.editModal{
+.editModalButton{
     margin-right: 2%
 }
 
 input{
     margin-bottom: 15px;
+    width: 100%;
+    border-radius: 4px;
 }
 
 .deleteText{
     margin-bottom: 15px;
     font-size: 20pt;
+}
+
+.deleteTitle{
+    color: red;
+    
 }
 
 .checkDone{
@@ -35,3 +42,36 @@ input{
 .checkboxText{
     margin-right: 10pt;
 }
+
+.Modal{
+    max-width: 800px;
+    position: relative;
+    padding: 1.2rem;
+    background: #ffffff;
+    background-clip: padding-box;
+    box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.25);
+    margin: 0 auto;
+}
+
+.insideModalButton{
+
+}
+
+.yourListTable{
+    border-collapse: collapse;
+    width: 100%;
+    overflow:"auto";
+    display: flex;
+    flex-wrap: row wrap;
+}
+
+.yourListTable td, .yourListTable th{
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+    padding: 10px;
+}
+
+.yourList{
+    margin-right: 5%;
+}
+
