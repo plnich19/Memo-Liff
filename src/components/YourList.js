@@ -22,7 +22,7 @@ class YourList extends Component {
             dataFetchMsg: 'no data',
             title: '',
             datetime: '',
-            modalDatetime: ''
+            modalDatetime: ' '
         };
     }
 
@@ -68,7 +68,7 @@ class YourList extends Component {
         const url = `https://asia-east2-memo-chatbot.cloudfunctions.net/DataAPI/?action=updateTask&groupId=${groupId}&taskId=${taskId}`
         const bodyData = {
             title: modalTitle,
-            datetime: modalDatetime,
+            datetime: modalDatetime-  7 * 1000 * 60 * 60,
             status: checked
         };
         console.log('ff', bodyData)
@@ -126,7 +126,7 @@ class YourList extends Component {
             openEdit: true,
             openTaskId: taskId,
             modalTitle: selectedTask.title,
-            modalDatetime: selectedTask.datetime,
+            modalDatetime: selectedTask.datetime +  7 * 1000 * 60 * 60,
         });
     };
 
@@ -220,7 +220,7 @@ class YourList extends Component {
                                 <tr key={task.taskId}>
                                     <td>{task.title}</td>
                                     {/* <td>{task.assignee}</td> */}
-                                    <td>{moment(task.datetime).format('MMMM Do YYYY, h:mm:ss a')}</td>
+                                    <td>{moment(task.datetime+  7 * 1000 * 60 * 60).format('MMMM Do YYYY, h:mm a')}</td>
                                     <td>
                                         <button className='editModalButton' onClick={this.onOpenEditModal(task.taskId)}>Edit</button>
                                     </td>
