@@ -86,6 +86,26 @@ input{
     color: white;
 }
 
+.yesdeleteButton{
+    background-color: #f44336;
+    margin-right: 5px;
+    border-radius: 4px;
+    margin-top: 10px;
+    border: none;
+    padding: 8px 14px;
+    color: white;
+}
+
+.nodeleteButton{
+    background-color: gray;
+    margin-right: 5px;
+    border-radius: 4px;
+    margin-top: 10px;
+    border: none;
+    padding: 8px 14px;
+    color: white;
+}
+
 
 .yourListTable{
     border-collapse: collapse;

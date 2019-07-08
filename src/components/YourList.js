@@ -221,8 +221,8 @@ class YourList extends Component {
                     <h2 className='deleteTitle'>Delete!!!</h2>
                     <div>
                         <p className='modalText'>Are you sure you want to delete this task?</p>
-                        <button className='yesButton' onClick={event => { this.submitDeleteTask(this.state.openTaskId) }}>Delete</button>
-                        <button className='noButton' onClick={this.onCloseDeleteModal}>Cancel</button>
+                        <button className='yesdeleteButton' onClick={event => { this.submitDeleteTask(this.state.openTaskId) }}>Delete</button>
+                        <button className='nodeleteButton' onClick={this.onCloseDeleteModal}>Cancel</button>
                     </div>
                 </Modal>
                 <Modal className='Modal' open={this.state.openCheck} onClose={this.onCloseCheckModal} center>

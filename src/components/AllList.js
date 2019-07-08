@@ -76,7 +76,7 @@ class AllList extends Component {
             task.assignee.map((eachAssigneeID) => {
               return this.state.getMembersList.map((eachMember) => {
                 if (eachMember.userId === eachAssigneeID) {
-                  return <span className='member'>{eachMember.displayName}</span>
+                  return <span key={eachMember.userId} className='member'>{eachMember.displayName}</span>
                 } else {
                   return null
                 }
@@ -120,6 +120,7 @@ class AllList extends Component {
         {
           getList.length > 0 &&
           <Select
+            className ='select'
             value={selectedFilterTaskOption}
             onChange={this.handleChange}
             options={filterTaskOptions}

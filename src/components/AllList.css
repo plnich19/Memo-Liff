@@ -16,8 +16,6 @@ h1{
     padding-right: 6px;
     padding-bottom: 2px;
     padding-top: 0px;
-    
-
 }
 
 .oneTask{
@@ -32,10 +30,15 @@ h1{
 }
 
 .taskContent.jobDone{
-    border: 2px solid greenyellow;
+    border: 5px solid #B6FF00;
+    /* background-color: #D7FF73 ; */
 }
 
 .assignee{
     margin-top: 6px;
 }
 
+.select{
+    width: 80%;
+    margin-left: 10%;
+}
