@@ -7,18 +7,35 @@ h1{
     margin-right: 5%;
 }
 
-.allListTable{
-    border-collapse: collapse;
-    margin-left: 3%;   
-    width: 100%;
-    overflow:"auto";
-    display: flex;
-    flex-wrap: row wrap;
+.member{
+    background-color: white;
+    margin: 2%;
+    border: 2px solid midnightblue;
+    border-radius: 4px;
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-bottom: 2px;
+    padding-top: 0px;
+    
+
 }
 
-.allListTable td, .allListTable th{
-    border-bottom: 1px solid #ddd;
-    text-align: left;
-    padding: 10px;
+.oneTask{
+    margin: 5%
+}
+
+.taskContent{
+    border: 1px solid black;
+    margin-bottom: 5px;
+    padding: 3%;
+    border-radius: 4px;
+}
+
+.taskContent.jobDone{
+    border: 2px solid greenyellow;
+}
+
+.assignee{
+    margin-top: 6px;
 }
 
