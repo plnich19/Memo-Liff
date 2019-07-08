@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './AllList.css';
 import moment from 'moment'
+import Select from 'react-select';
+
 class AllList extends Component {
 
   constructor(props) {
@@ -8,12 +10,13 @@ class AllList extends Component {
     this.state = {
       getList: [],
       getMembersList: [],
-      dataFetchMsg: 'loading'
+      dataFetchMsg: 'loading',
+      selectedFilterTaskOption: 'all',
+      filterTaskOptions: []
     };
   }
 
   getData = (context) => {
-    console.log('getData context', context)
     const actions = [`getTasks`, `getMembers`]
     const groupId = context.groupId
     actions.forEach(action => {
@@ -22,23 +25,40 @@ class AllList extends Component {
         .then(response => response.json())
         .then(data => {
           if (action === 'getTasks') {
-            console.log('getData afterFetch', data)
             this.setState({ getList: data })
+            this.getFilterTaskOptions(data)
           }
           else {
             this.setState({ getMembersList: data })
-            console.log('getMembersList afterFetch', data)
-
           }
-
         });
     })
   }
 
+  getFilterTaskOptions = (data) => {
+    let results = data.map((task) => {
+      let obj = {
+        value: task.datetime,
+        label: moment(task.datetime).format('MMMM Do YYYY h:mm a')
+      }
+      return obj
+    })
+    results = [
+      {
+        value: 'all',
+        label: 'ALL'
+      },
+      ...results
+    ]
+    this.setState({ filterTaskOptions: results })
+  }
+
+  handleChange = selectedOption => {
+    this.setState({ selectedFilterTaskOption: selectedOption.value });
+  };
+
   componentWillMount() {
     const { context } = this.props
-    console.log('AllList componentDidMount props', this.props)
-    console.log('AllList componentDidMount state', this.state)
     this.getData(context)
   }
 
@@ -46,53 +66,68 @@ class AllList extends Component {
 
   }
 
+  taskRenderer = (task) => {
+    return (
+      <div key={task.taskId} className={`taskContent ${task.status ? 'jobDone' : ''}`}>
+        <div>Title: {task.title}</div>
+        <div>Due Date: {moment(task.datetime).format('MMMM Do YYYY h:mm a')}</div>
+        <div className='assignee'>
+          Assignee: {
+            task.assignee.map((eachAssigneeID) => {
+              return this.state.getMembersList.map((eachMember) => {
+                if (eachMember.userId === eachAssigneeID) {
+                  return <span className='member'>{eachMember.displayName}</span>
+                } else {
+                  return null
+                }
+              })
+            })
+          }
+        </div>
+      </div>
+    )
+  }
+
+
   allTasksTable() {
     return (
       <div>
         {
           this.state.getList.map((task) => {
-            return (
-              <div className='taskContent'>
-                <div>Title: {task.title}</div>
-                <div>Due Date: {moment(task.datetime).format('MMMM Do YYYY h:mm a')}</div>
-                <div className='assignee'>
-                Assignee: {
-                    task.assignee.map((eachAssigneeID) => {
-                      return this.state.getMembersList.map((eachMember) => {
-                        if (eachMember.userId === eachAssigneeID) {
-                          return <span className='member'>{eachMember.displayName}</span>
-                        } else {
-                          return null
-                        }
-                      })
-                    })
-                  }
-                </div>
-              </div>
-            )
+
+            if (this.state.selectedFilterTaskOption === "all") {
+              return this.taskRenderer(task)
+            }
+            else {
+              if (this.state.selectedFilterTaskOption === task.datetime) {
+                return this.taskRenderer(task)
+              }
+              else {
+                return null
+              }
+            }
           })
         }
       </div>
     )
   }
 
-  // divHeader() {
-  //     let header = Object.keys(this.state.getList[0])
-  //     return header.maspan((key, index) => {
-  //         return <th key={index}>{key.toUpperCase()}</th>
-  //     })
-  // }
   render() {
-    const { getList, dataFetchMsg } = this.state
+    const { getList, dataFetchMsg, filterTaskOptions, selectedFilterTaskOption } = this.state
     return (
       <div className='allTasks'>
         <h1>All Tasks</h1>
         {
+          getList.length > 0 &&
+          <Select
+            value={selectedFilterTaskOption}
+            onChange={this.handleChange}
+            options={filterTaskOptions}
+          />
+        }
+        {
           getList.length > 0 ?
             <div className='oneTask'>
-              {/* <th>
-                                <tr>{this.tableHeader()}</tr>
-                            </th> */}
               {this.allTasksTable()}
             </div> :
             <h1>{dataFetchMsg}</h1>
@@ -100,7 +135,5 @@ class AllList extends Component {
       </div>
     );
   }
-
-
 }
 export default AllList;

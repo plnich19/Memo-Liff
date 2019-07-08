@@ -31,6 +31,11 @@ h1{
     border-radius: 4px;
 }
 
+.taskContent.jobDone{
+    border: 2px solid greenyellow;
+}
+
 .assignee{
     margin-top: 6px;
 }
+
