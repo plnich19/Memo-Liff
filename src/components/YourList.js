@@ -19,7 +19,7 @@ class YourList extends Component {
             checked: false,
             openCheck: false,
             groupId: '',
-            dataFetchMsg: 'no data',
+            dataFetchMsg: 'loading',
             title: '',
             datetime: '',
             modalDatetime: ' '
@@ -41,7 +41,7 @@ class YourList extends Component {
 
     submitUpdateTask = () => {
         const { context } = this.props
-        this.updateStatus(context);
+        this.editTask(context);
         this.onCloseEditModal();
     }
 
@@ -62,14 +62,34 @@ class YourList extends Component {
 
     updateStatus = (context) => {
         const groupId = context.groupId
-        const { openTaskId, modalTitle, modalDatetime, checked } = this.state
+        const { openTaskId, checked } = this.state
+        const taskId = openTaskId
+        console.log(taskId, 'eeee')
+        const url = `https://asia-east2-memo-chatbot.cloudfunctions.net/DataAPI/?action=updateTask&groupId=${groupId}&taskId=${taskId}`
+        const bodyData = {
+            status: checked
+        };
+        console.log('ff', bodyData)
+        axios
+            .post(url, bodyData)
+            .then((response) => {
+                console.log(response);
+                this.getData(context)
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    editTask = (context) => {
+        const groupId = context.groupId
+        const { openTaskId, modalTitle, modalDatetime } = this.state
         const taskId = openTaskId
         console.log(taskId, 'eeee')
         const url = `https://asia-east2-memo-chatbot.cloudfunctions.net/DataAPI/?action=updateTask&groupId=${groupId}&taskId=${taskId}`
         const bodyData = {
             title: modalTitle,
-            datetime: modalDatetime-  7 * 1000 * 60 * 60,
-            status: checked
+            datetime: modalDatetime
         };
         console.log('ff', bodyData)
         axios
@@ -126,7 +146,7 @@ class YourList extends Component {
             openEdit: true,
             openTaskId: taskId,
             modalTitle: selectedTask.title,
-            modalDatetime: selectedTask.datetime +  7 * 1000 * 60 * 60,
+            modalDatetime: selectedTask.datetime,
         });
     };
 
@@ -169,17 +189,17 @@ class YourList extends Component {
         this.setState({ openCheck: false });
     };
 
-    sumitCheck = () => {
+    submitCheck = () => {
         this.setState({ openCheck: false })
         this.updateStatus(this.props.context)
     }
 
     yourTasksTable = () => {
         return (
-            <table>
-                <Modal className='Modal' open={this.state.openEdit} onClose={this.onCloseEditModal} center>
+            <div >
+                <Modal  className='Modal' overlayClassName="Overlay" open={this.state.openEdit} onClose={this.onCloseEditModal} center>
                     <h2>Edit</h2>
-                    <form>
+                    <form className='form'>
                         <p>Tasks: </p>
                         <input type="text" name='title' value={this.state.modalTitle} onChange={this.onTitleChanged} />
                         <p>Datetime: </p>
@@ -194,38 +214,38 @@ class YourList extends Component {
                             timeCaption="time"
                         />
                     </form>
-                    <button className='insideModalButton' onClick={event => { this.submitUpdateTask(this.state.openTaskId) }}>Update</button>
-                    <button className='insideModalButton' onClick={this.onCloseEditModal}>Cancel</button>
+                    <button className='yesButton' onClick={event => { this.submitUpdateTask(this.state.openTaskId) }}>Update</button>
+                    <button className='noButton' onClick={this.onCloseEditModal}>Cancel</button>
                 </Modal>
                 <Modal className='Modal' open={this.state.openDelete} onClose={this.onCloseDeleteModal} center>
                     <h2 className='deleteTitle'>Delete!!!</h2>
                     <div>
-                        <p className='deleteText'>Are you sure you want to delete this task?</p>
-                        <button onClick={event => { this.submitDeleteTask(this.state.openTaskId) }}>Delete</button>
-                        <button onClick={this.onCloseDeleteModal}>Cancel</button>
+                        <p className='modalText'>Are you sure you want to delete this task?</p>
+                        <button className='yesButton' onClick={event => { this.submitDeleteTask(this.state.openTaskId) }}>Delete</button>
+                        <button className='noButton' onClick={this.onCloseDeleteModal}>Cancel</button>
                     </div>
                 </Modal>
                 <Modal className='Modal' open={this.state.openCheck} onClose={this.onCloseCheckModal} center>
                     <h2>Status</h2>
-                    <p className='checkText'>Are you sure you want to change status?</p>
+                    <p className='modalText'>Are you sure you want to change status?</p>
                     <div>
-                        <button onClick={this.sumitCheck}>Yes</button>
-                        <button onClick={this.onCloseCheckModal}>No</button>
+                        <button className='yesButton' onClick={this.submitCheck}>Yes</button>
+                        <button className='noButton' onClick={this.onCloseCheckModal}>No</button>
                     </div>
                 </Modal>
                 {
                     this.state.getYourList.map((task) => {
                         return (
-                            <div>
-                                <tr key={task.taskId}>
+                            <div className='eachTask'>
+                                <tr  key={task.taskId}>
                                     <td>{task.title}</td>
                                     {/* <td>{task.assignee}</td> */}
-                                    <td>{moment(task.datetime+  7 * 1000 * 60 * 60).format('MMMM Do YYYY, h:mm a')}</td>
+                                   
                                     <td>
-                                        <button className='editModalButton' onClick={this.onOpenEditModal(task.taskId)}>Edit</button>
+                                        <button className='editdeleteButton' onClick={this.onOpenEditModal(task.taskId)}>Edit</button>
                                     </td>
                                     <td>
-                                        <button className='deleteModalButton' onClick={this.onOpenDeleteModal(task.taskId)}>Delete</button>
+                                        <button className='editdeleteButton' onClick={this.onOpenDeleteModal(task.taskId)}>Delete</button>
                                     </td>
                                     {/* <td>status: {`${task.status}`}</td> */}
                                     <td>
@@ -237,11 +257,12 @@ class YourList extends Component {
                                         </label>
                                     </td>
                                 </tr>
+                                <div className='time' >{moment(task.datetime).format('MMMM Do YYYY, h:mm a')}</div>
                             </div>
                         )
                     })
                 }
-            </table>
+            </div>
         )
     }
 
@@ -253,7 +274,7 @@ class YourList extends Component {
                 {
                     getYourList.length > 0 ?
                         <table className='yourListTable'>
-                            <tbody>
+                            <tbody className='tableBody'>
                                 {this.yourTasksTable()}
                             </tbody>
                         </table> :

@@ -54,8 +54,8 @@ class AllList extends Component {
             return (
               <div className='taskContent'>
                 <div>Title: {task.title}</div>
-                <div>Due Date: {moment(task.datetime +  7 * 1000 * 60 * 60).format('MMMM Do YYYY, h:mm a')}</div>
-                <div>
+                <div>Due Date: {moment(task.datetime).format('MMMM Do YYYY h:mm a')}</div>
+                <div className='assignee'>
                 Assignee: {
                     task.assignee.map((eachAssigneeID) => {
                       return this.state.getMembersList.map((eachMember) => {
