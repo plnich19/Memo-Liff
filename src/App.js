@@ -97,7 +97,7 @@ class App extends Component {
 
     return (
       <div className="container">
-        <Header />
+        {/* <Header /> */}
         <div className="nav">
           <div onClick={() => { this.setState({ stage: 'AllList' }) }}>All List</div>
           <div onClick={() => { this.setState({ stage: 'YourList' }) }}>YourList</div>
