@@ -139,6 +139,7 @@ class AllList extends Component {
           getList.length > 0 &&
           <Select
             className ='select'
+            placeholder="เลือกวันที่ต้องการ"
             value={selectedFilterTaskOption}
             onChange={this.handleChange}
             options={filterTaskOptions}
