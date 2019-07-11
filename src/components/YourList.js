@@ -22,7 +22,9 @@ class YourList extends Component {
             dataFetchMsg: 'loading',
             title: '',
             datetime: '',
-            modalDatetime: ' '
+            modalDatetime: ' ',
+            modalTitle:''
+            
         };
     }
 
@@ -41,15 +43,15 @@ class YourList extends Component {
 
     submitUpdateTask = () => {
         const { context } = this.props
+        console.log(this.state.modalTitle,'jjj')
         this.editTask(context);
         this.onCloseEditModal();
     }
 
     onTitleChanged = (event) => {
-        console.log('onTitleChanged', event.target.value)
-        this.setState({
+          this.setState({
             modalTitle: event.target.value
-        });
+            });
     };
 
     onDateTimeChanged = (date) => {
@@ -195,15 +197,16 @@ class YourList extends Component {
     }
 
     yourTasksTable = () => {
+      const { modalTitle } = this.state
+      const isEnabled = modalTitle.length > 0
         return (
             <div >
                 <Modal  className='Modal' overlayClassName="Overlay" open={this.state.openEdit} onClose={this.onCloseEditModal} center>
                     <h2>Edit</h2>
                     <form className='form'>
-                        <p>Tasks: </p>
-                        <input type="text" name='title' value={this.state.modalTitle} onChange={this.onTitleChanged} />
+                        <p>Task: </p>
+                        <input type="text" name='title' value={this.state.modalTitle} onChange={this.onTitleChanged} formNoValidate/>
                         <p>Datetime: </p>
-                        {/* <input type="text" name='datetime' value={this.state.modalDatetime} onChange={this.onDateTimeChanged} /> */}
                         <DatePicker
                             selected={this.state.modalDatetime}
                             onChange={this.onDateTimeChanged}
@@ -214,7 +217,7 @@ class YourList extends Component {
                             timeCaption="time"
                         />
                     </form>
-                    <button className='yesButton' onClick={event => { this.submitUpdateTask(this.state.openTaskId) }}>Update</button>
+                    <button className={'yesButton'} disabled={!isEnabled} onClick={event => { this.submitUpdateTask(this.state.openTaskId) }}>Update</button>
                     <button className='noButton' onClick={this.onCloseEditModal}>Cancel</button>
                 </Modal>
                 <Modal className='Modal' open={this.state.openDelete} onClose={this.onCloseDeleteModal} center>
@@ -239,15 +242,12 @@ class YourList extends Component {
                             <div className='eachTask'>
                                 <tr  key={task.taskId}>
                                     <td>{task.title}</td>
-                                    {/* <td>{task.assignee}</td> */}
-                                   
                                     <td>
                                         <button className='editdeleteButton' onClick={this.onOpenEditModal(task.taskId)}>Edit</button>
                                     </td>
                                     <td>
                                         <button className='editdeleteButton' onClick={this.onOpenDeleteModal(task.taskId)}>Delete</button>
                                     </td>
-                                    {/* <td>status: {`${task.status}`}</td> */}
                                     <td>
                                         <label className='checkboxContainer'>
                                             <input type='checkbox' className='checkDone'
@@ -267,6 +267,7 @@ class YourList extends Component {
     }
 
     render() {
+      
         const { getYourList, dataFetchMsg } = this.state
         return (
             <div className='yourList'>

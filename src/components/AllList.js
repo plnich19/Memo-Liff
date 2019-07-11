@@ -36,25 +36,35 @@ class AllList extends Component {
   }
 
   getFilterTaskOptions = (data) => {
-    let results = data.map((task) => {
+    let dateArr = []
+    data.map((task) => {
+      dateArr.push(moment(task.datetime).format('YYYY-MM-DD'))
+    })
+
+    const distinctedDateArr = [... new Set(dateArr)].map((date) => {
+      let timestampDateValue = new Date(date).getTime()
       let obj = {
-        value: task.datetime,
-        label: moment(task.datetime).format('MMMM Do YYYY h:mm a')
+        value: timestampDateValue, 
+        label: date,
       }
       return obj
     })
-    results = [
+    
+    let results = [
       {
         value: 'all',
         label: 'ALL'
       },
-      ...results
+      ...distinctedDateArr
     ]
+    console.log(results,'re')
+    console.log(distinctedDateArr,'distinctedDateArr')
     this.setState({ filterTaskOptions: results })
   }
 
   handleChange = selectedOption => {
     this.setState({ selectedFilterTaskOption: selectedOption.value });
+    // console.log(this.state.selectedFilterTaskOption,'selectedFilterTaskOption')
   };
 
   componentWillMount() {
@@ -63,14 +73,13 @@ class AllList extends Component {
   }
 
   componentDidMount() {
-
   }
 
   taskRenderer = (task) => {
     return (
       <div key={task.taskId} className={`taskContent ${task.status ? 'jobDone' : ''}`}>
         <div>Title: {task.title}</div>
-        <div>Due Date: {moment(task.datetime).format('MMMM Do YYYY h:mm a')}</div>
+        <div>Due Date: {moment(task.datetime).format('MMMM Do YYYY  hh:mm a')}</div>
         <div className='assignee'>
           Assignee: {
             task.assignee.map((eachAssigneeID) => {
@@ -88,20 +97,29 @@ class AllList extends Component {
     )
   }
 
-
   allTasksTable() {
+    const{selectedFilterTaskOption} = this.state
+    console.log(selectedFilterTaskOption,'selectedFilterTaskOption')
+    
+    console.log(selectedFilterTaskOption +(1 * 24 * 60 * 60 * 1000),'selectedFilterTaskOption + oneDay')
     return (
       <div>
         {
           this.state.getList.map((task) => {
 
-            if (this.state.selectedFilterTaskOption === "all") {
+            if (selectedFilterTaskOption === "all") {
               return this.taskRenderer(task)
             }
             else {
-              if (this.state.selectedFilterTaskOption === task.datetime) {
+              // const oneDay = 1 * 24 * 60 * 60 * 1000
+              const tdayLimit = selectedFilterTaskOption
+              const tmrwLimit = selectedFilterTaskOption+(1 * 24 * 60 * 60 * 1000)
+              if ( (tdayLimit <= task.datetime) && (task.datetime <= tmrwLimit) ){
+                console.log(task.datetime,'task.datetime')
+
                 return this.taskRenderer(task)
               }
+              
               else {
                 return null
               }

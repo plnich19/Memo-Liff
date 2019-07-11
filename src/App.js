@@ -70,18 +70,18 @@ class App extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener('load', this.initialize);
-    this.setState(
-      // {
-      //   context:{
-      //     displayName: 'J',
-      //     userId: 'Ud3f6ed0ecf179f61d9c325caec2ace0a',
-      //     pictureUrl: 'https://profile.line-scdn.net/0h4AhU0SMea25VLEEbfMsUOWlpZQMiAm0mLR0jWnEoYAt6Sy8_OxonCHglNQwvTyQ_aUkiWHh4YV4q',
-      //     statusMessage: 'status',
-      //     groupId: 'Ce938b6c2ba40812b0afa36e11078ec56',
-      //   },
-      // },
-    )
+    window.addEventListener('load', this.initialize)
+    // this.setState(
+    //   {
+    //     context:{
+    //       displayName: 'J',
+    //       userId: 'Ud3f6ed0ecf179f61d9c325caec2ace0a',
+    //       pictureUrl: 'https://profile.line-scdn.net/0h4AhU0SMea25VLEEbfMsUOWlpZQMiAm0mLR0jWnEoYAt6Sy8_OxonCHglNQwvTyQ_aUkiWHh4YV4q',
+    //       statusMessage: 'status',
+    //       groupId: 'Ce938b6c2ba40812b0afa36e11078ec56',
+    //     },
+    //   },
+    // )
 
   }
 

@@ -19,7 +19,8 @@ h1{
 }
 
 .oneTask{
-    margin: 5%
+    margin: 5%;
+    width: 95%;
 }
 
 .taskContent{
