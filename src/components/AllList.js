@@ -41,7 +41,7 @@ class AllList extends Component {
       dateArr.push(moment(task.datetime).format('YYYY-MM-DD'))
     })
 
-    const distinctedDateArr = [... new Set(dateArr)].map((date) => {
+    const distinctedDateArr = [... new Set(dateArr.sort().reverse())].map((date) => {
       let timestampDateValue = new Date(date).getTime()
       let obj = {
         value: timestampDateValue, 
@@ -53,7 +53,7 @@ class AllList extends Component {
     let results = [
       {
         value: 'all',
-        label: 'ALL'
+        label: 'ทั้งหมด'
       },
       ...distinctedDateArr
     ]
