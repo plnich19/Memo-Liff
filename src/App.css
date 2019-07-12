@@ -33,9 +33,7 @@
 }
 
 .nav {
-  /* position: fixed; */
   left: 0;
-  /* top: 0; */
   right: 0;
   display: flex;
   justify-content: center;
@@ -47,7 +45,7 @@
 .nav div {
   padding: 14px 28px;
   border: 2px solid #000;
-  margin:0 1vw;
+  margin: 0 1vw;
   font-size: 18pt;
   border-radius: 12px;
 }

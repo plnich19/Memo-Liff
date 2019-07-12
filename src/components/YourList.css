@@ -1,170 +1,168 @@
-h1{
-    font-size: 40px;
-    text-align: center;
+h1 {
+  font-size: 40px;
+  text-align: center;
 }
 
-h2{
-    font-size: 40px;
-    margin: 0%;
-    padding-top: 1px;
-    text-align: start;
+h2 {
+  font-size: 40px;
+  margin: 0%;
+  padding-top: 1px;
+  text-align: start;
+  margin-bottom: 10px;
 }
 
-.editModalButton{
-    margin-right: 2%
+.editModalButton {
+  margin-right: 2%;
 }
 
-input{
-    margin-bottom: 10px;
-    width: 70%;
-    border-radius: 4px;
+input {
+  margin-bottom: 10px;
+  width: 70%;
+  border-radius: 4px;
 }
 
-.deleteText{
-    margin-bottom: 15px;
-    font-size: 20pt;
+.deleteText {
+  margin-bottom: 15px;
+  font-size: 20pt;
 }
 
-.deleteTitle{
-    color: red;
+.deleteTitle {
+  color: red;
 }
 
-.editdeleteButton{
-    background-color: #555555;
-    color: white;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 4px;
+.editdeleteButton {
+  background-color: #555555;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 4px;
 }
 
-.checkDone{
-    height: 15pt;
-    width: 15pt;
+.checkDone {
+  height: 15pt;
+  width: 15pt;
 }
 
-.checkboxContainer{
-    margin-left: 15px;
-    position: relative;
-    margin-top: 10%
+.checkboxContainer {
+  margin-left: 15px;
+  position: relative;
+  margin-top: 10%;
 }
 
-.modalText{
-    font-size: 12pt
+.modalText {
+  font-size: 12pt;
 }
 
-.Modal{
-    position: relative;
-    padding: 1.2rem;
-    background: #ffffff;
-    background-clip: padding-box;
-    box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.25);
-    margin: 0 auto;
+.Modal {
+  position: relative;
+  padding: 1.2rem;
+  background: #ffffff;
+  background-clip: padding-box;
+  box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.25);
+  margin: 0 auto;
 }
 
-.Overlay{
-    width: 100%;
-    position: fixed;
+.Overlay {
+  width: 100%;
+  position: fixed;
 }
 
-.yesButton{
-    background-color: #4CAF50;
-    margin-right: 5px;
-    border-radius: 4px;
-    margin-top: 10px;
-    border: none;
-    padding: 8px 14px;
-    color: white;
+.yesButton {
+  background-color: #4caf50;
+  margin-right: 5px;
+  border-radius: 4px;
+  margin-top: 10px;
+  border: none;
+  padding: 8px 14px;
+  color: white;
 }
 
-.yesButton:disabled{
-    background-color: rgb(78, 82, 78);
-    margin-right: 5px;
-    border-radius: 4px;
-    margin-top: 10px;
-    border: none;
-    padding: 8px 14px;
-    color: white;
+.yesButton:disabled {
+  background-color: rgb(78, 82, 78);
+  margin-right: 5px;
+  border-radius: 4px;
+  margin-top: 10px;
+  border: none;
+  padding: 8px 14px;
+  color: white;
 }
 
-
-
-.noButton{
-    background-color: #f44336;
-    margin-right: 5px;
-    border-radius: 4px;
-    margin-top: 10px;
-    border: none;
-    padding: 8px 14px;
-    color: white;
+.noButton {
+  background-color: #f44336;
+  margin-right: 5px;
+  border-radius: 4px;
+  margin-top: 10px;
+  border: none;
+  padding: 8px 14px;
+  color: white;
 }
 
-.yesdeleteButton{
-    background-color: #f44336;
-    margin-right: 5px;
-    border-radius: 4px;
-    margin-top: 10px;
-    border: none;
-    padding: 8px 14px;
-    color: white;
+.yesdeleteButton {
+  background-color: #f44336;
+  margin-right: 5px;
+  border-radius: 4px;
+  margin-top: 10px;
+  border: none;
+  padding: 8px 14px;
+  color: white;
 }
 
-.nodeleteButton{
-    background-color: gray;
-    margin-right: 5px;
-    border-radius: 4px;
-    margin-top: 10px;
-    border: none;
-    padding: 8px 14px;
-    color: white;
+.nodeleteButton {
+  background-color: gray;
+  margin-right: 5px;
+  border-radius: 4px;
+  margin-top: 10px;
+  border: none;
+  padding: 8px 14px;
+  color: white;
 }
 
-
-.yourListTable{
-    border-collapse: collapse;
-    width: 100%;
-    overflow:"auto";
-    display: flex;
-    flex-wrap: row wrap;
-    font-size: 15pt;
+.yourListTable {
+  border-collapse: collapse;
+  width: 100%;
+  overflow: "auto";
+  display: flex;
+  flex-wrap: row wrap;
+  font-size: 15pt;
 }
 
-.yourListTable td{
-    text-align: left;
-    padding: 10px;
-    width: 100%
+.yourListTable td {
+  text-align: left;
+  padding: 10px;
+  width: 100%;
 }
 
-.yourList{
-    /* margin-right: 5%; */
+.eachTask {
+  border-bottom: 1px solid #ddd;
 }
 
-.eachTask{
-    border-bottom: 1px solid #ddd;
+.time {
+  color: red;
+  padding-left: 3%;
+  margin-bottom: 10px;
+  font-size: 10pt;
 }
 
-
-.time{
-    color: red;
-    padding-left: 3%;
-    margin-bottom: 10px; 
-    font-size: 10pt  
+.tableBody {
+  width: 100%;
 }
 
-.tableBody{
-    width: 100%
+.form {
+  width: 280px;
 }
 
-.form{
-    width: 280px
+.form p {
+  margin: 0%;
+  font-size: 24px;
 }
 
-.form p{
-    margin: 0%;
-    font-size: 24px
-
+.form input {
+  height: 20px;
+  font-size: 15px;
 }
 
-.myDatePicker, .react-datepicker-wrapper, .react-datepicker__input-container {
-    width: 100%;
-    font-size: 50px;
-  } 
+.myDatePicker,
+.react-datepicker-wrapper,
+.react-datepicker__input-container {
+  width: 100%;
+}
