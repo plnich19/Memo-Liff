@@ -118,7 +118,6 @@ class AllList extends Component {
   allTasksTable() {
     const{selectedFilterTaskOption} = this.state
     console.log(selectedFilterTaskOption,'selectedFilterTaskOption')
-    console.log(selectedFilterTaskOption +(1 * 24 * 60 * 60 * 1000),'selectedFilterTaskOption + oneDay')
     return (
       <div>
         {
@@ -128,11 +127,12 @@ class AllList extends Component {
               return this.taskRenderer(task)
             }
             else {
-              const tdayLimit = selectedFilterTaskOption
-              const tmrwLimit = selectedFilterTaskOption+(1 * 24 * 60 * 60 * 1000)
-              if ( (tdayLimit <= task.datetime) && (task.datetime <= tmrwLimit) ){
+              const todayLimit = selectedFilterTaskOption - (7 * 1000 * 60 * 60)
+              const tmrwLimit = selectedFilterTaskOption + (1 * 24 * 60 * 60 * 1000)
+              if ( (todayLimit <= task.datetime) && (task.datetime <= tmrwLimit) ){
+                console.log(todayLimit,'todayLimit')
                 console.log(task.datetime,'task.datetime')
-
+                console.log(tmrwLimit,'tmrwLimit')
                 return this.taskRenderer(task)
               }
               
