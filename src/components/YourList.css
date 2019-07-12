@@ -76,6 +76,16 @@ input{
     color: white;
 }
 
+.yesButton:disabled{
+    background-color: rgb(78, 82, 78);
+    margin-right: 5px;
+    border-radius: 4px;
+    margin-top: 10px;
+    border: none;
+    padding: 8px 14px;
+    color: white;
+}
+
 
 
 .noButton{

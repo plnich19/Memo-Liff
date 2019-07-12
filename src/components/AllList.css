@@ -24,15 +24,18 @@ h1{
 }
 
 .taskContent{
-    border: 1px solid black;
+    border: 4px solid black;
     margin-bottom: 5px;
     padding: 3%;
     border-radius: 4px;
 }
 
-.taskContent.jobDone{
+.taskContent.done{
     border: 5px solid #B6FF00;
-    /* background-color: #D7FF73 ; */
+}
+
+.taskContent.expired{
+    border: 5px solid red;
 }
 
 

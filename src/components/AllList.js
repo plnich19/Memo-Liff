@@ -77,8 +77,18 @@ class AllList extends Component {
   }
 
   taskRenderer = (task) => {
+    const currentTime = Math.floor(Date.now())
+    console.log(currentTime,'currentTime')
+    console.log(task.datetime,'task.datetime')
+    if(task.status == true){
+      var taskStatus = 'done'
+    }
+    else if(task.datetime < currentTime){
+      var taskStatus = 'expired'
+    }
+    console.log(taskStatus,'taskStatus')
     return (
-      <div key={task.taskId} className={`taskContent ${task.status ? 'jobDone' : ''} `}>
+      <div key={task.taskId} className={`taskContent ${taskStatus} `}>
         <div>Title: {task.title}</div>
         <div>Due Date: {moment(task.datetime).format('MMMM Do YYYY  hh:mm a')}</div>
         <div>Create By: 
