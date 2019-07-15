@@ -11,7 +11,12 @@ class AllList extends Component {
       getMembersList: [],
       dataFetchMsg: "loading",
       selectedFilterTaskOption: "all",
-      filterTaskOptions: []
+      filterTaskOptions: [],
+      currentDateFromSelect: {
+        index: 0,
+        humanDate: "ทั้งหมด",
+        timestamp: "all"
+      }
     };
   }
 
@@ -68,8 +73,43 @@ class AllList extends Component {
     this.setState({ filterTaskOptions: results });
   };
 
+  getCurrentDate = date => {
+    const { filterTaskOptions } = this.state;
+    const currentIndex = filterTaskOptions.findIndex(
+      filterTaskOption => filterTaskOption.value === date
+    );
+    this.setState({
+      currentDateFromSelect: {
+        index: currentIndex,
+        humanDate: filterTaskOptions[currentIndex].label,
+        timestamp: filterTaskOptions[currentIndex].value
+      }
+    });
+  };
+
+  prevDate = () => {
+    console.log("prevDate");
+  };
+
+  nextDate = () => {
+    console.log("nextDate");
+    const { filterTaskOptions, currentDateFromSelect } = this.state;
+    const { index, humanDate, timestamp } = currentDateFromSelect;
+    console.log(filterTaskOptions.length, "filterTaskOptions.length");
+    console.log(index, "index");
+    if (index < filterTaskOptions.length - 1) {
+      this.setState({
+        currentDateFromSelect: {
+          index: index + 1,
+          humanDate: filterTaskOptions[index + 1].label,
+          timestamp: filterTaskOptions[index + 1].value
+        }
+      });
+    }
+  };
+
   handleChange = selectedOption => {
-    this.setState({ selectedFilterTaskOption: selectedOption.value });
+    this.getCurrentDate(selectedOption.value);
   };
 
   componentWillMount() {
@@ -124,20 +164,24 @@ class AllList extends Component {
   };
 
   allTasksTable() {
-    const { selectedFilterTaskOption } = this.state;
-    console.log(selectedFilterTaskOption, "selectedFilterTaskOption");
+    const { currentDateFromSelect } = this.state;
+    console.log(
+      currentDateFromSelect.timestamp,
+      "currentDateFromSelect.timestamp"
+    );
     return (
       <div>
         {this.state.getList
           .sort((a, b) => new Date(b.datetime) - new Date(a.datetime))
           .reverse()
           .map(task => {
-            if (selectedFilterTaskOption === "all") {
+            if (currentDateFromSelect.timestamp === "all") {
               return this.taskRenderer(task);
             } else {
-              const todayLimit = selectedFilterTaskOption - 7 * 1000 * 60 * 60;
+              const todayLimit =
+                currentDateFromSelect.timestamp - 7 * 1000 * 60 * 60;
               const tmrwLimit =
-                selectedFilterTaskOption + 1 * 24 * 60 * 60 * 1000;
+                currentDateFromSelect.timestamp + 1 * 24 * 60 * 60 * 1000;
               if (todayLimit <= task.datetime && task.datetime <= tmrwLimit) {
                 console.log(todayLimit, "todayLimit");
                 console.log(task.datetime, "task.datetime");
@@ -157,7 +201,7 @@ class AllList extends Component {
       getList,
       dataFetchMsg,
       filterTaskOptions,
-      selectedFilterTaskOption
+      currentDateFromSelect
     } = this.state;
     return (
       <div className="allTasks">
@@ -166,11 +210,20 @@ class AllList extends Component {
           <Select
             className="select"
             placeholder="เลือกวันที่ต้องการ"
-            value={selectedFilterTaskOption}
+            value={currentDateFromSelect.humanDate}
             onChange={this.handleChange}
             options={filterTaskOptions}
           />
         )}
+        <div>{currentDateFromSelect.humanDate}</div>
+        <div>
+          <button className="editdeleteButton" onClick={this.prevDate}>
+            &lt; Prev
+          </button>
+          <button className="editdeleteButton" onClick={this.nextDate}>
+            Next &gt;
+          </button>
+        </div>
         {getList.length > 0 ? (
           <div className="oneTask">{this.allTasksTable()}</div>
         ) : (

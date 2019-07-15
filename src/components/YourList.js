@@ -187,7 +187,7 @@ class YourList extends Component {
     this.updateStatus(this.props.context);
   };
 
-  yourTasksTable = () => {
+  yourTasksTable = task => {
     const { modalTitle } = this.state;
     const isEnabled = modalTitle.length > 0;
     return (
@@ -277,46 +277,56 @@ class YourList extends Component {
             </button>
           </div>
         </Modal>
+        <div className="eachTask">
+          <tr key={task.taskId}>
+            <td>{task.title}</td>
+            <td>
+              <button
+                className="editdeleteButton"
+                onClick={this.onOpenEditModal(task.taskId)}
+              >
+                Edit
+              </button>
+            </td>
+            <td>
+              <button
+                className="editdeleteButton"
+                onClick={this.onOpenDeleteModal(task.taskId)}
+              >
+                Delete
+              </button>
+            </td>
+            <td>
+              <label className="checkboxContainer">
+                <input
+                  type="checkbox"
+                  className="checkDone"
+                  checked={task.status}
+                  onClick={this.onOpenCheckModal(task)}
+                />
+              </label>
+            </td>
+          </tr>
+          <div className="time">
+            {moment(task.datetime).format("MMMM Do YYYY, h:mm a")}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  filterTask = () => {
+    return (
+      <div>
         {this.state.getYourList
           .sort((a, b) => new Date(b.datetime) - new Date(a.datetime))
           .reverse()
           .map(task => {
-            return (
-              <div className="eachTask">
-                <tr key={task.taskId}>
-                  <td>{task.title}</td>
-                  <td>
-                    <button
-                      className="editdeleteButton"
-                      onClick={this.onOpenEditModal(task.taskId)}
-                    >
-                      Edit
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      className="editdeleteButton"
-                      onClick={this.onOpenDeleteModal(task.taskId)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                  <td>
-                    <label className="checkboxContainer">
-                      <input
-                        type="checkbox"
-                        className="checkDone"
-                        checked={task.status}
-                        onClick={this.onOpenCheckModal(task)}
-                      />
-                    </label>
-                  </td>
-                </tr>
-                <div className="time">
-                  {moment(task.datetime).format("MMMM Do YYYY, h:mm a")}
-                </div>
-              </div>
-            );
+            const currentTime = Math.floor(Date.now());
+            console.log(currentTime, "cur");
+            if (task.datetime !== currentTime) {
+              return this.yourTasksTable(task);
+            }
           })}
       </div>
     );
@@ -329,7 +339,7 @@ class YourList extends Component {
         <h1>Your Tasks </h1>
         {getYourList.length > 0 ? (
           <table className="yourListTable">
-            <tbody className="tableBody">{this.yourTasksTable()}</tbody>
+            <tbody className="tableBody">{this.filterTask()}</tbody>
           </table>
         ) : (
           <h1>{dataFetchMsg}</h1>
