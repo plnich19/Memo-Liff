@@ -1,51 +1,81 @@
-.App {
+:root {
+  font-size: 5vw;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: rgb(245, 245, 245);
+  font-size: 1rem;
+  background-image: url(/static/media/maing-bg.24584ce5.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center center;
+  color: #fff;
+}
+
+.header {
+  margin-bottom: 1rem;
+}
+
+.header.YourList .headerProfile {
+  width: 14rem;
+}
+
+.headerMsg {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.headerProfileWrap {
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+.headerProfile {
+  width: 8rem;
+  margin: 0 auto 1rem;
+  box-shadow: 0 0 0 0.4rem rgba(0, 0, 0, 0.3);
+  border-radius: 100%;
+  overflow: hidden;
+  transition: width .4s;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.headerProfileImageWrap {
+  padding-bottom: 100%;
+  position: relative;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.nav {
+.headerProfileImage {
+  width: 100%;
+  height: auto;
+  display: block;
+  position: absolute;
   left: 0;
+  top: 0;
   right: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 3vw;
-  background-color: #fff;
+  bottom: 0;
+  margin: auto;
 }
 
-.nav div {
-  padding: 14px 28px;
-  border: 2px solid #000;
-  margin: 0 1vw;
-  font-size: 18pt;
-  border-radius: 12px;
+.headerBack {
+  font-size: 0.7rem;
+  white-space: nowrap;
+  padding: 0.4rem;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 0.4rem;
+  font-weight: normal;
+  text-align: center;
+  width: 50vw;
+  margin: 0.5rem auto 1rem;
 }

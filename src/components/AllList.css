@@ -1,48 +1,55 @@
-h1{
-    font-size: 50px;
-    text-align: center;
+.taskContentWrap {
+  padding: 1rem;
 }
 
-.allTasks{
-    margin-right: 5%;
+.taskContent {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
 }
 
-.member{
-    background-color: white;
-    margin: 2%;
-    border: 2px solid midnightblue;
-    border-radius: 4px;
-    padding-left: 6px;
-    padding-right: 6px;
-    padding-bottom: 2px;
-    padding-top: 0px;
+.taskContent.done {
+  /* background-color: rgba(0, 100, 0, 0.7); */
 }
 
-.oneTask{
-    margin: 5%;
-    width: 95%;
+.taskContent.expired {
+  opacity: 0.5;
 }
 
-.taskContent{
-    border: 4px solid black;
-    margin-bottom: 5px;
-    padding: 3%;
-    border-radius: 4px;
+.taskContentTitle {
+  font-size: 1.4em;
+  font-weight: bold;
+  margin-bottom: 0.4rem;
+  text-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.7);
 }
 
-.taskContent.done{
-    border: 5px solid #B6FF00;
+.taskContentCreateBy {
+  opacity: 0.7;
+  margin-bottom: 0.4rem;
 }
 
-.taskContent.expired{
-    border: 5px solid red;
+.taskContentCreateBy span {
+  display: inline-block;
+  margin: 0 0.4rem 0.4rem;
 }
 
-.assignee{
-    margin-top: 6px;
+.taskContentPIC {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  margin-top: 1rem;
+  padding-top: 0.4rem;
 }
 
-.select{
-    width: 80%;
-    margin-left: 10%;
+.taskContentPICMembers {
+  margin: 0 -0.4rem;
+}
+
+.taskContentPICMember {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  font-weight: bold;
+  margin: 0.4rem;
+  border-radius: 0.4rem;
 }

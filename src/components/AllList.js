@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./AllList.css";
 import moment from "moment";
 import Select from "react-select";
+import CardTask from "./CardTask";
 
 class AllList extends Component {
   constructor(props) {
@@ -34,7 +35,6 @@ class AllList extends Component {
           } else {
             this.setState({ getMembersList: data });
           }
-          console.log(this.state.getList, "getList");
         });
     });
   };
@@ -68,8 +68,6 @@ class AllList extends Component {
       },
       ...distinctedDateArr
     ];
-    console.log(results, "re");
-    console.log(distinctedDateArr, "distinctedDateArr");
     this.setState({ filterTaskOptions: results });
   };
 
@@ -87,16 +85,11 @@ class AllList extends Component {
     });
   };
 
-  prevDate = () => {
-    console.log("prevDate");
-  };
+  prevDate = () => {};
 
   nextDate = () => {
-    console.log("nextDate");
     const { filterTaskOptions, currentDateFromSelect } = this.state;
     const { index, humanDate, timestamp } = currentDateFromSelect;
-    console.log(filterTaskOptions.length, "filterTaskOptions.length");
-    console.log(index, "index");
     if (index < filterTaskOptions.length - 1) {
       this.setState({
         currentDateFromSelect: {
@@ -117,76 +110,28 @@ class AllList extends Component {
     this.getData(context);
   }
 
-  componentDidMount() {}
-
-  taskRenderer = task => {
-    const currentTime = Math.floor(Date.now());
-    console.log(currentTime, "currentTime");
-    console.log(task.datetime, "task.datetime");
-    if (task.status == true) {
-      var taskStatus = "done";
-    } else if (task.datetime < currentTime) {
-      var taskStatus = "expired";
-    }
-    console.log(taskStatus, "taskStatus");
-    return (
-      <div key={task.taskId} className={`taskContent ${taskStatus} `}>
-        <div>Title: {task.title}</div>
-        <div>
-          Due Date: {moment(task.datetime).format("MMMM Do YYYY  hh:mm a")}
-        </div>
-        <div>
-          Create By:
-          {this.state.getMembersList.map(member => {
-            if (member.userId === task.createby) {
-              return <span key={member.userId}>{member.displayName}</span>;
-            }
-          })}
-        </div>
-        <div className="assignee">
-          Assignee:{" "}
-          {task.assignee.map(eachAssigneeID => {
-            return this.state.getMembersList.map(eachMember => {
-              if (eachMember.userId === eachAssigneeID) {
-                return (
-                  <span key={eachMember.userId} className="member">
-                    {eachMember.displayName}
-                  </span>
-                );
-              } else {
-                return null;
-              }
-            });
-          })}
-        </div>
-      </div>
-    );
-  };
-
   allTasksTable() {
-    const { currentDateFromSelect } = this.state;
-    console.log(
-      currentDateFromSelect.timestamp,
-      "currentDateFromSelect.timestamp"
-    );
+    const { currentDateFromSelect, getMembersList } = this.state;
     return (
       <div>
         {this.state.getList
           .sort((a, b) => new Date(b.datetime) - new Date(a.datetime))
           .reverse()
           .map(task => {
+            const propsToCardTask = {
+              key: task.taskId,
+              task: task,
+              membersList: getMembersList
+            };
             if (currentDateFromSelect.timestamp === "all") {
-              return this.taskRenderer(task);
+              return <CardTask {...propsToCardTask} />;
             } else {
               const todayLimit =
                 currentDateFromSelect.timestamp - 7 * 1000 * 60 * 60;
               const tmrwLimit =
                 currentDateFromSelect.timestamp + 1 * 24 * 60 * 60 * 1000;
               if (todayLimit <= task.datetime && task.datetime <= tmrwLimit) {
-                console.log(todayLimit, "todayLimit");
-                console.log(task.datetime, "task.datetime");
-                console.log(tmrwLimit, "tmrwLimit");
-                return this.taskRenderer(task);
+                return <CardTask {...propsToCardTask} />;
               } else {
                 return null;
               }
@@ -205,7 +150,6 @@ class AllList extends Component {
     } = this.state;
     return (
       <div className="allTasks">
-        <h1>All Tasks</h1>
         {getList.length > 0 && (
           <Select
             className="select"
@@ -225,7 +169,7 @@ class AllList extends Component {
           </button>
         </div>
         {getList.length > 0 ? (
-          <div className="oneTask">{this.allTasksTable()}</div>
+          <div className="taskContentWrap">{this.allTasksTable()}</div>
         ) : (
           <h1>{dataFetchMsg}</h1>
         )}

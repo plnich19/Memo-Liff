@@ -3,10 +3,11 @@ import React, { Component } from "react";
 import firebase from "firebase";
 import AllList from "./components/AllList";
 import YourList from "./components/YourList";
+import Header from "./components/Header";
 import "firebase/firestore";
 import "./App.css";
 
-const liff = window.liff;
+// const liff = window.liff
 
 class App extends Component {
   constructor(props) {
@@ -67,6 +68,10 @@ class App extends Component {
   //   );
   // };
 
+  setStage = stage => {
+    this.setState({ stage });
+  };
+
   componentDidMount() {
     window.addEventListener("load", this.initialize);
     this.setState({
@@ -89,25 +94,16 @@ class App extends Component {
     if (liffInitStatus === "error") return <h1>liffInitStatus ERROR !!!!</h1>;
     if (getProfileStatus === "error") return <h1>getProfile ERROR !!!!</h1>;
 
+    const propToHeader = {
+      title: stage === "AllList" ? "ALL TASKS" : "YOUR TASKS",
+      context,
+      stage,
+      setStage: this.setStage,
+      showBack: stage === "YourList"
+    };
     return (
       <div className="container">
-        {/* <Header /> */}
-        <div className="nav">
-          <div
-            onClick={() => {
-              this.setState({ stage: "AllList" });
-            }}
-          >
-            All List
-          </div>
-          <div
-            onClick={() => {
-              this.setState({ stage: "YourList" });
-            }}
-          >
-            YourList
-          </div>
-        </div>
+        <Header {...propToHeader} />
         <div className="container">
           {stage === "AllList" && <AllList context={context} />}
           {stage === "YourList" && <YourList context={context} />}
