@@ -11,13 +11,14 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: rgb(245, 245, 245);
+  background: #0d588c;
+  background: linear-gradient(0deg, rgba(13, 88, 140, 1) 0%, rgba(25, 108, 195, 1) 50%, rgba(13, 88, 140, 1) 100%);
   font-size: 1rem;
-  background-image: url(/static/media/maing-bg.24584ce5.png);
+  /* background-image: url(./maing-bg.png);
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-position: center center;
+  background-position: center center; */
   color: #fff;
 }
 
