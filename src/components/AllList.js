@@ -89,6 +89,19 @@ class AllList extends Component {
 
   prevDate = () => {
     console.log("prevDate");
+    const { filterTaskOptions, currentDateFromSelect } = this.state;
+    const { index, humanDate, timestamp } = currentDateFromSelect;
+    console.log(filterTaskOptions.length, "filterTaskOptions.length");
+    console.log(index, "index");
+    if (index > 0) {
+      this.setState({
+        currentDateFromSelect: {
+          index: index - 1,
+          humanDate: filterTaskOptions[index - 1].label,
+          timestamp: filterTaskOptions[index - 1].value
+        }
+      });
+    }
   };
 
   nextDate = () => {
@@ -206,22 +219,21 @@ class AllList extends Component {
     return (
       <div className="allTasks">
         <h1>All Tasks</h1>
-        {getList.length > 0 && (
-          <Select
-            className="select"
-            placeholder="เลือกวันที่ต้องการ"
-            value={currentDateFromSelect.humanDate}
-            onChange={this.handleChange}
-            options={filterTaskOptions}
-          />
-        )}
-        <div>{currentDateFromSelect.humanDate}</div>
-        <div>
-          <button className="editdeleteButton" onClick={this.prevDate}>
-            &lt; Prev
+        <div className="chooseDate">
+          <button className="prevButton" onClick={this.prevDate}>
+            &lt;
           </button>
-          <button className="editdeleteButton" onClick={this.nextDate}>
-            Next &gt;
+          {getList.length > 0 && (
+            <Select
+              className="select"
+              placeholder={currentDateFromSelect.humanDate}
+              // value={currentDateFromSelect.humanDate}
+              onChange={this.handleChange}
+              options={filterTaskOptions}
+            />
+          )}
+          <button className="nextButton" onClick={this.nextDate}>
+            &gt;
           </button>
         </div>
         {getList.length > 0 ? (

@@ -1,38 +1,38 @@
 // App.js
-import React, { Component } from "react";
-import firebase from "firebase";
-import AllList from "./components/AllList";
-import YourList from "./components/YourList";
-import "firebase/firestore";
-import "./App.css";
+import React, { Component } from 'react';
+import firebase from 'firebase';
+import AllList from './components/AllList';
+import YourList from './components/YourList';
+import 'firebase/firestore';
+import './App.css';
 
-const liff = window.liff;
+const liff = window.liff
 
 class App extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      stage: "AllList",
-      getProfileStatus: "",
-      liffInitStatus: "",
+      stage: 'AllList',
+      getProfileStatus: '',
+      liffInitStatus: '',
       context: {
-        displayName: "",
-        userId: "",
-        pictureUrl: "",
-        statusMessage: "",
-        groupId: ""
-      }
-    };
+        displayName: '',
+        userId: '',
+        pictureUrl: '',
+        statusMessage: '',
+        groupId: '',
+      },
+    }
     var config = {
-      apiKey: "AIzaSyCmCs0fRWBIGywo2XEwYV08rtyIqk8Kcdw",
-      authDomain: "memo-chatbot.firebaseapp.com",
-      databaseURL: "https://memo-chatbot.firebaseio.com",
-      projectId: "memo-chatbot",
-      storageBucket: "memo-chatbot.appspot.com",
-      messagingSenderId: "1021071669137",
-      appId: "1:1021071669137:web:60637043b6e3d025"
-    };
-    firebase.initializeApp(config);
+      apiKey: 'AIzaSyCmCs0fRWBIGywo2XEwYV08rtyIqk8Kcdw',
+      authDomain: 'memo-chatbot.firebaseapp.com',
+      databaseURL: 'https://memo-chatbot.firebaseio.com',
+      projectId: 'memo-chatbot',
+      storageBucket: 'memo-chatbot.appspot.com',
+      messagingSenderId: '1021071669137',
+      appId: '1:1021071669137:web:60637043b6e3d025',
+    }
+    firebase.initializeApp(config)
   }
 
   // initialize = () => {
@@ -68,26 +68,26 @@ class App extends Component {
   // };
 
   componentDidMount() {
-    window.addEventListener("load", this.initialize);
+    window.addEventListener('load', this.initialize)
     this.setState({
       context: {
-        displayName: "J",
-        userId: "Ud3f6ed0ecf179f61d9c325caec2ace0a",
+        displayName: 'J',
+        userId: 'Ud3f6ed0ecf179f61d9c325caec2ace0a',
         pictureUrl:
-          "https://profile.line-scdn.net/0h4AhU0SMea25VLEEbfMsUOWlpZQMiAm0mLR0jWnEoYAt6Sy8_OxonCHglNQwvTyQ_aUkiWHh4YV4q",
-        statusMessage: "status",
-        groupId: "Ce938b6c2ba40812b0afa36e11078ec56"
-      }
-    });
+          'https://profile.line-scdn.net/0h4AhU0SMea25VLEEbfMsUOWlpZQMiAm0mLR0jWnEoYAt6Sy8_OxonCHglNQwvTyQ_aUkiWHh4YV4q',
+        statusMessage: 'status',
+        groupId: 'Ce938b6c2ba40812b0afa36e11078ec56',
+      },
+    })
   }
 
   render() {
-    const { liffInitStatus, getProfileStatus, stage, context } = this.state;
+    const { liffInitStatus, getProfileStatus, stage, context } = this.state
     if (!context.displayName) {
-      return <h1>Waiting... data from LINE API</h1>;
+      return <h1>Waiting... data from LINE API</h1>
     }
-    if (liffInitStatus === "error") return <h1>liffInitStatus ERROR !!!!</h1>;
-    if (getProfileStatus === "error") return <h1>getProfile ERROR !!!!</h1>;
+    if (liffInitStatus === 'error') return <h1>liffInitStatus ERROR !!!!</h1>
+    if (getProfileStatus === 'error') return <h1>getProfile ERROR !!!!</h1>
 
     return (
       <div className="container">
@@ -95,26 +95,26 @@ class App extends Component {
         <div className="nav">
           <div
             onClick={() => {
-              this.setState({ stage: "AllList" });
+              this.setState({ stage: 'AllList' })
             }}
           >
             All List
           </div>
           <div
             onClick={() => {
-              this.setState({ stage: "YourList" });
+              this.setState({ stage: 'YourList' })
             }}
           >
             YourList
           </div>
         </div>
         <div className="container">
-          {stage === "AllList" && <AllList context={context} />}
-          {stage === "YourList" && <YourList context={context} />}
+          {stage === 'AllList' && <AllList context={context} />}
+          {stage === 'YourList' && <YourList context={context} />}
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
