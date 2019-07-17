@@ -294,7 +294,7 @@ class YourList extends Component {
         {this.state.getYourList
           .sort((a, b) => new Date(b.datetime) - new Date(a.datetime))
           .reverse()
-          .forEach(task => {
+          .map(task => {
             const currentTime = Math.floor(Date.now());
             if (task.datetime !== currentTime) {
               return this.yourTasksTable(task);
