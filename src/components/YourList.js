@@ -16,7 +16,7 @@ class YourList extends Component {
       checked: false,
       openCheck: false,
       groupId: "",
-      dataFetchMsg: "loading",
+      dataFetchMsg: "",
       title: "",
       datetime: "",
       modalDatetime: " ",
@@ -25,23 +25,23 @@ class YourList extends Component {
   }
 
   getData = context => {
-    console.log("getData context", context);
     const action = `getYourTask`;
     const groupId = context.groupId;
     const userId = context.userId;
+    this.setState({
+      dataFetchMsg: "loading"
+    });
     fetch(
       `https://asia-east2-memo-chatbot.cloudfunctions.net/DataAPI/?action=${action}&groupId=${groupId}&userId=${userId}`
     )
       .then(response => response.json())
       .then(data => {
-        console.log("getData afterFetch", data);
-        this.setState({ getYourList: data });
+        this.setState({ getYourList: data, dataFetchMsg: "No Data" });
       });
   };
 
   submitUpdateTask = () => {
     const { context } = this.props;
-    console.log(this.state.modalTitle, "jjj");
     this.editTask(context);
     this.onCloseEditModal();
   };
@@ -57,50 +57,39 @@ class YourList extends Component {
     this.setState({
       modalDatetime: dateToTimStamp
     });
-    console.log("mm", dateToTimStamp);
   };
 
   updateStatus = context => {
     const groupId = context.groupId;
     const { openTaskId, checked } = this.state;
     const taskId = openTaskId;
-    console.log(taskId, "eeee");
     const url = `https://asia-east2-memo-chatbot.cloudfunctions.net/DataAPI/?action=updateTask&groupId=${groupId}&taskId=${taskId}`;
     const bodyData = {
       status: checked
     };
-    console.log("ff", bodyData);
     axios
       .post(url, bodyData)
       .then(response => {
-        console.log(response);
         this.getData(context);
       })
-      .catch(error => {
-        console.log(error);
-      });
+      .catch(error => {});
   };
 
   editTask = context => {
     const groupId = context.groupId;
     const { openTaskId, modalTitle, modalDatetime } = this.state;
     const taskId = openTaskId;
-    console.log(taskId, "eeee");
     const url = `https://asia-east2-memo-chatbot.cloudfunctions.net/DataAPI/?action=updateTask&groupId=${groupId}&taskId=${taskId}`;
     const bodyData = {
       title: modalTitle,
       datetime: modalDatetime
     };
-    console.log("ff", bodyData);
     axios
       .post(url, bodyData)
       .then(response => {
-        console.log(response);
         this.getData(context);
       })
-      .catch(error => {
-        console.log(error);
-      });
+      .catch(error => {});
   };
 
   submitDeleteTask = () => {
@@ -111,19 +100,14 @@ class YourList extends Component {
 
   deleteFetch(context) {
     const groupId = context.groupId;
-    console.log(groupId, "www");
     const taskId = this.state.thisTaskId;
-    console.log(taskId, "1www");
     const url = `https://asia-east2-memo-chatbot.cloudfunctions.net/DataAPI/?action=deleteTask&groupId=${groupId}&taskId=${taskId}`;
     axios
       .post(url)
       .then(response => {
-        console.log(response);
         this.getData(context);
       })
-      .catch(error => {
-        console.log(error);
-      });
+      .catch(error => {});
   }
 
   componentWillMount() {
@@ -135,11 +119,9 @@ class YourList extends Component {
 
   onOpenEditModal = taskId => e => {
     const { getYourList } = this.state;
-    console.log("onOpenEditModal getYourList", getYourList);
     const selectedTask = getYourList.find(task => {
       return task.taskId === taskId;
     });
-    console.log("onOpenEditModal selectedTask", selectedTask);
     this.setState({
       openEdit: true,
       openTaskId: taskId,
@@ -153,11 +135,6 @@ class YourList extends Component {
   };
 
   onOpenDeleteModal = taskId => e => {
-    const { getYourList } = this.state;
-    console.log("onOpenDeleteModal getYourList", getYourList);
-    const selectedTask = getYourList.find(task => {
-      return task.taskId === taskId;
-    });
     this.setState({
       openDelete: true,
       thisTaskId: taskId
@@ -175,7 +152,6 @@ class YourList extends Component {
       openTaskId: taskId,
       checked: !task.status
     });
-    console.log(this.state.checkThis, "bb");
   };
 
   onCloseCheckModal = () => {
@@ -316,15 +292,22 @@ class YourList extends Component {
   };
 
   filterTask = () => {
+    const currentTime = Math.floor(Date.now());
+    const currentDate = moment(currentTime).format("YYYY-MM-DD");
+    const todayTime = new Date(currentDate).getTime() - 7 * 1000 * 60 * 60;
+    const tmrTime = todayTime + 1 * 24 * 60 * 60 * 1000;
+    console.log(tmrTime, "tmrTime");
     return (
       <div>
         {this.state.getYourList
           .sort((a, b) => new Date(b.datetime) - new Date(a.datetime))
           .reverse()
           .map(task => {
-            const currentTime = Math.floor(Date.now());
-            console.log(currentTime, "cur");
-            if (task.datetime !== currentTime) {
+            if (todayTime <= task.datetime && task.datetime <= tmrTime) {
+              return this.yourTasksTable(task);
+            } else if (task.status === true) {
+              return null;
+            } else {
               return this.yourTasksTable(task);
             }
           })}
@@ -336,7 +319,6 @@ class YourList extends Component {
     const { getYourList, dataFetchMsg } = this.state;
     return (
       <div className="yourList">
-        <h1>Your Tasks </h1>
         {getYourList.length > 0 ? (
           <table className="yourListTable">
             <tbody className="tableBody">{this.filterTask()}</tbody>

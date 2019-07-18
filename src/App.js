@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import firebase from "firebase";
 import AllList from "./components/AllList";
 import YourList from "./components/YourList";
+import Header from "./components/Header";
 import "firebase/firestore";
 import "./App.css";
 
@@ -67,6 +68,10 @@ class App extends Component {
   //   );
   // };
 
+  setStage = stage => {
+    this.setState({ stage });
+  };
+
   componentDidMount() {
     window.addEventListener("load", this.initialize);
     this.setState({
@@ -74,7 +79,7 @@ class App extends Component {
         displayName: "J",
         userId: "Ud3f6ed0ecf179f61d9c325caec2ace0a",
         pictureUrl:
-          "https://profile.line-scdn.net/0h4AhU0SMea25VLEEbfMsUOWlpZQMiAm0mLR0jWnEoYAt6Sy8_OxonCHglNQwvTyQ_aUkiWHh4YV4q",
+          "https://profile.line-scdn.net/0hGpx_kG9jGF9FJjKE5tFnCHljFjIyCB4XPURSPmEjQ2dtFQpbfEZWPDMlQjtvEAwKfkRQamZyEWZq",
         statusMessage: "status",
         groupId: "Ce938b6c2ba40812b0afa36e11078ec56"
       }
@@ -89,25 +94,16 @@ class App extends Component {
     if (liffInitStatus === "error") return <h1>liffInitStatus ERROR !!!!</h1>;
     if (getProfileStatus === "error") return <h1>getProfile ERROR !!!!</h1>;
 
+    const propToHeader = {
+      title: stage === "AllList" ? "ALL TASKS" : "YOUR TASKS",
+      context,
+      stage,
+      setStage: this.setStage,
+      showBack: stage === "YourList"
+    };
     return (
       <div className="container">
-        {/* <Header /> */}
-        <div className="nav">
-          <div
-            onClick={() => {
-              this.setState({ stage: "AllList" });
-            }}
-          >
-            All List
-          </div>
-          <div
-            onClick={() => {
-              this.setState({ stage: "YourList" });
-            }}
-          >
-            YourList
-          </div>
-        </div>
+        <Header {...propToHeader} />
         <div className="container">
           {stage === "AllList" && <AllList context={context} />}
           {stage === "YourList" && <YourList context={context} />}
