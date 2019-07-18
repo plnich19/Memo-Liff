@@ -11,7 +11,7 @@
 }
 
 .taskContent.done {
-  /* background-color: rgba(0, 100, 0, 0.7); */
+  /* background-color: rgba(28, 146, 28, 0.7); */
 }
 
 .taskContent.expired {
@@ -65,11 +65,11 @@
 }
 
 .prevButton {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: unset;
   color: white;
   margin-right: 10px;
   border-radius: 40%;
-  border: 1px solid rgba(0, 0, 0, 0.6);
+  border: unset;
   font-size: 20pt;
   font-weight: bold;
   padding: 0.1rem 0.9rem;
@@ -77,11 +77,11 @@
 }
 
 .nextButton {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: unset;
   color: white;
   margin-left: 10px;
   border-radius: 40%;
-  border: 1px solid rgba(0, 0, 0, 0.6);
+  border: unset;
   font-size: 20pt;
   font-size-adjust: initial;
   font-weight: bold;

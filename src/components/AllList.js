@@ -68,8 +68,12 @@ class AllList extends Component {
    */
   getFilterTaskOptions = data => {
     let dateArr = [];
-    data.map(task => {
-      dateArr.push(moment(task.datetime).format("YYYY-MM-DD"));
+
+    data.forEach(task => {
+      if (task.datetime) {
+        dateArr.push(moment(task.datetime).format("YYYY-MM-DD"));
+      }
+      console.log(task.datetime, "dateeee");
     });
 
     const distinctedDateArr = [...new Set(dateArr.sort().reverse())].map(
