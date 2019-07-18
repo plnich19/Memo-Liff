@@ -3,6 +3,7 @@ import "./AllList.css";
 import moment from "moment";
 import Select from "react-select";
 import CardTask from "./CardTask";
+import ProgressBar from "./ProgressBar";
 import axios from "axios";
 
 class AllList extends Component {
@@ -23,7 +24,6 @@ class AllList extends Component {
   }
 
   getData = context => {
-    const actions = [`getTasks`, `getMembers`];
     const groupId = context.groupId;
     this.setState({
       dataFetchMsg: "loading"
@@ -39,19 +39,17 @@ class AllList extends Component {
       .all([getActions("getTasks"), getActions("getMembers")])
       .then(
         axios.spread((dataTasks, dataMembers) => {
-          this.setState({
-            getList: dataTasks.data,
-            getMembersList: dataMembers.data,
-            dataFetchMsg: "done"
-          });
           if (dataTasks.length == 0 || dataMembers.length == 0) {
             this.setState({
               dataFetchMsg: "No Data"
             });
           }
+          this.setState({
+            getList: dataTasks.data,
+            getMembersList: dataMembers.data,
+            dataFetchMsg: "done"
+          });
           this.getFilterTaskOptions(dataTasks.data);
-          console.log(dataTasks, "dataTasks");
-          console.log(dataMembers, "dataMembers");
         })
       )
       .catch(err => {
@@ -73,7 +71,6 @@ class AllList extends Component {
       if (task.datetime) {
         dateArr.push(moment(task.datetime).format("YYYY-MM-DD"));
       }
-      console.log(task.datetime, "dateeee");
     });
 
     const distinctedDateArr = [...new Set(dateArr.sort().reverse())].map(
@@ -112,11 +109,8 @@ class AllList extends Component {
   };
 
   prevDate = () => {
-    console.log("prevDate");
     const { filterTaskOptions, currentDateFromSelect } = this.state;
-    const { index, humanDate, timestamp } = currentDateFromSelect;
-    console.log(filterTaskOptions.length, "filterTaskOptions.length");
-    console.log(index, "index");
+    const { index } = currentDateFromSelect;
     if (index > 0) {
       this.setState({
         currentDateFromSelect: {
@@ -130,7 +124,7 @@ class AllList extends Component {
 
   nextDate = () => {
     const { filterTaskOptions, currentDateFromSelect } = this.state;
-    const { index, humanDate, timestamp } = currentDateFromSelect;
+    const { index } = currentDateFromSelect;
     if (index < filterTaskOptions.length - 1) {
       this.setState({
         currentDateFromSelect: {
@@ -189,9 +183,18 @@ class AllList extends Component {
       filterTaskOptions,
       currentDateFromSelect
     } = this.state;
+    let countDone = 0;
+    getList.forEach(task => {
+      if (task.status === true) {
+        countDone++;
+      }
+    });
+    console.log(countDone, "countDone");
+    const calPercentage = (countDone / getList.length) * 100;
+    const percentage = calPercentage.toFixed(2);
     return (
       <div className="allTasks">
-        <h1>All Tasks</h1>
+        <ProgressBar percentage={percentage} />
         <div className="chooseDate">
           <button className="prevButton" onClick={this.prevDate}>
             &lt;
