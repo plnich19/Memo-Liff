@@ -1,13 +1,19 @@
 .progressBar {
   background-color: gray;
+  margin-bottom: 1.2rem;
+  border-radius: 1rem;
+  margin-left: 3%;
+  margin-right: 3%;
 }
 
-.prgressBar-Bar {
-  background-color: red;
+.progressBar-Bar {
+  background-color: #32cd32;
+  border-radius: 1rem;
 }
 
-.prgressBar-label {
-  color: white;
-  text-align: right;
-  padding: 0.4rem;
+.progressBar-label {
+  color: black;
+  font-weight: bold;
+  text-align: center;
+  padding: 0.3rem;
 }

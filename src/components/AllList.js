@@ -194,6 +194,7 @@ class AllList extends Component {
     const percentage = calPercentage.toFixed(2);
     return (
       <div className="allTasks">
+        <div className="groupScore">Your Group Score</div>
         <ProgressBar percentage={percentage} />
         <div className="chooseDate">
           <button className="prevButton" onClick={this.prevDate}>
