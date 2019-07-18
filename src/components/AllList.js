@@ -3,6 +3,7 @@ import "./AllList.css";
 import moment from "moment";
 import Select from "react-select";
 import CardTask from "./CardTask";
+import axios from "axios";
 
 class AllList extends Component {
   constructor(props) {
@@ -10,7 +11,7 @@ class AllList extends Component {
     this.state = {
       getList: [],
       getMembersList: [],
-      dataFetchMsg: "loading",
+      dataFetchMsg: "",
       selectedFilterTaskOption: "all",
       filterTaskOptions: [],
       currentDateFromSelect: {
@@ -24,19 +25,40 @@ class AllList extends Component {
   getData = context => {
     const actions = [`getTasks`, `getMembers`];
     const groupId = context.groupId;
-    actions.forEach(action => {
-      const API = `https://asia-east2-memo-chatbot.cloudfunctions.net/DataAPI/?action=${action}&groupId=${groupId}`;
-      fetch(API)
-        .then(response => response.json())
-        .then(data => {
-          if (action === "getTasks") {
-            this.setState({ getList: data });
-            this.getFilterTaskOptions(data);
-          } else {
-            this.setState({ getMembersList: data });
-          }
-        });
+    this.setState({
+      dataFetchMsg: "loading"
     });
+
+    function getActions(action) {
+      return axios.get(
+        `https://asia-east2-memo-chatbot.cloudfunctions.net/DataAPI/?action=${action}&groupId=${groupId}`
+      );
+    }
+
+    axios
+      .all([getActions("getTasks"), getActions("getMembers")])
+      .then(
+        axios.spread((dataTasks, dataMembers) => {
+          this.setState({
+            getList: dataTasks.data,
+            getMembersList: dataMembers.data,
+            dataFetchMsg: "done"
+          });
+          if (dataTasks.length == 0 || dataMembers.length == 0) {
+            this.setState({
+              dataFetchMsg: "No Data"
+            });
+          }
+          this.getFilterTaskOptions(dataTasks.data);
+          console.log(dataTasks, "dataTasks");
+          console.log(dataMembers, "dataMembers");
+        })
+      )
+      .catch(err => {
+        this.setState({
+          dataFetchMsg: "Error"
+        });
+      });
   };
 
   /**

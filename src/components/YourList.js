@@ -16,7 +16,7 @@ class YourList extends Component {
       checked: false,
       openCheck: false,
       groupId: "",
-      dataFetchMsg: "loading",
+      dataFetchMsg: "",
       title: "",
       datetime: "",
       modalDatetime: " ",
@@ -28,12 +28,15 @@ class YourList extends Component {
     const action = `getYourTask`;
     const groupId = context.groupId;
     const userId = context.userId;
+    this.setState({
+      dataFetchMsg: "loading"
+    });
     fetch(
       `https://asia-east2-memo-chatbot.cloudfunctions.net/DataAPI/?action=${action}&groupId=${groupId}&userId=${userId}`
     )
       .then(response => response.json())
       .then(data => {
-        this.setState({ getYourList: data });
+        this.setState({ getYourList: data, dataFetchMsg: "No Data" });
       });
   };
 
