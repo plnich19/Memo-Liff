@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 .taskContentWrap {
   padding: 1rem;
 }
@@ -44,90 +43,6 @@
 
 .taskContentPICMembers {
   margin: 0 -0.4rem;
-=======
-h1 {
-  font-size: 50px;
-  text-align: center;
-}
-
-.allTasks {
-  margin-right: 5%;
-}
-
-.member {
-  background-color: white;
-  margin: 2%;
-  border: 2px solid black;
-  border-radius: 4px;
-  padding-left: 6px;
-  padding-right: 6px;
-  padding-bottom: 2px;
-  padding-top: 0px;
-}
-
-.oneTask {
-  margin: 5%;
-  width: 95%;
-}
-
-.taskContent {
-  border: 4px solid black;
-  margin-bottom: 5px;
-  padding: 3%;
-  border-radius: 4px;
-}
-
-.taskContent.done {
-  border: 5px solid #b6ff00;
-}
-
-.taskContent.expired {
-  border: 5px solid red;
-}
-
-.assignee {
-  margin-top: 6px;
-}
-
-.select {
-  width: 100%;
-}
-
-.chooseDate {
-  display: flex;
-  margin-top: 15px;
-  margin-bottom: 15px;
-  margin-inline-start: 10%;
-  margin-inline-end: 5%;
-}
-
-.prevButton {
-  background-color: #f1f1f1;
-  color: black;
-  margin-right: 10px;
-  border-radius: 60%;
-  border: 1px solid #f1f1f1;
-  font-size: 18pt;
-  font-weight: bold;
-  padding-top: 3%;
-  padding-bottom: 3%;
-  padding-left: 5%;
-  padding-right: 5%;
-}
-
-.nextButton {
-  background-color: #f1f1f1;
-  color: black;
-  margin-left: 10px;
-  border-radius: 60%;
-  border: 1px solid #f1f1f1;
-  font-size: 18pt;
-  font-weight: bold;
-  padding-top: 3%;
-  padding-bottom: 3%;
-  padding-left: 5%;
-  padding-right: 5%;
->>>>>>> addStyle
 }
 
 .taskContentPICMember {
@@ -137,4 +52,39 @@ h1 {
   font-weight: bold;
   margin: 0.4rem;
   border-radius: 0.4rem;
+}
+
+.chooseDate {
+  display: flex;
+  margin: 0.5rem 1rem;
+}
+
+.select {
+  width: 100%;
+  color: black;
+}
+
+.prevButton {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  margin-right: 10px;
+  border-radius: 40%;
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  font-size: 20pt;
+  font-weight: bold;
+  padding: 0.1rem 0.9rem;
+  height: 2.7rem;
+}
+
+.nextButton {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  margin-left: 10px;
+  border-radius: 40%;
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  font-size: 20pt;
+  font-size-adjust: initial;
+  font-weight: bold;
+  padding: 0.1rem 0.9rem;
+  height: 2.7rem;
 }

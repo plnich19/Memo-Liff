@@ -289,14 +289,22 @@ class YourList extends Component {
   };
 
   filterTask = () => {
+    const currentTime = Math.floor(Date.now());
+    const currentDate = moment(currentTime).format("YYYY-MM-DD");
+    const todayTime = new Date(currentDate).getTime() - 7 * 1000 * 60 * 60;
+    const tmrTime = todayTime + 1 * 24 * 60 * 60 * 1000;
+    console.log(tmrTime, "tmrTime");
     return (
       <div>
         {this.state.getYourList
           .sort((a, b) => new Date(b.datetime) - new Date(a.datetime))
           .reverse()
           .map(task => {
-            const currentTime = Math.floor(Date.now());
-            if (task.datetime !== currentTime) {
+            if (todayTime <= task.datetime && task.datetime <= tmrTime) {
+              return this.yourTasksTable(task);
+            } else if (task.status === true) {
+              return null;
+            } else {
               return this.yourTasksTable(task);
             }
           })}
