@@ -27,7 +27,7 @@ class AllList extends Component {
   getData = context => {
     const groupId = context.groupId;
     this.setState({
-      dataFetchMsg: "loading"
+      dataFetchMsg: "Loading"
     });
 
     function getActions(action) {
@@ -44,11 +44,12 @@ class AllList extends Component {
             this.setState({
               dataFetchMsg: "No Data"
             });
+            return;
           }
           this.setState({
             getList: dataTasks.data,
             getMembersList: dataMembers.data,
-            dataFetchMsg: "done"
+            dataFetchMsg: "Done"
           });
           this.getFilterTaskOptions(dataTasks.data);
         })
@@ -212,6 +213,8 @@ class AllList extends Component {
     });
     const calPercentage = (countDone / eachDateTasks.length) * 100;
     const percentage = calPercentage.toFixed(0);
+    if (getList.length === 0 || eachDateTasks.length === 0)
+      return <h1>{dataFetchMsg}</h1>;
     return (
       <div className="allTasks">
         <ProgressBar percentage={percentage} title="Your Group Score" />
@@ -219,24 +222,18 @@ class AllList extends Component {
           <button className="prevButton" onClick={this.prevDate}>
             &lt;
           </button>
-          {getList.length > 0 && (
-            <Select
-              className="select"
-              placeholder={currentDateFromSelect.humanDate}
-              value={currentDateFromSelect.humanDate}
-              onChange={this.handleChange}
-              options={filterTaskOptions}
-            />
-          )}
+          <Select
+            className="select"
+            placeholder={currentDateFromSelect.humanDate}
+            value={currentDateFromSelect.humanDate}
+            onChange={this.handleChange}
+            options={filterTaskOptions}
+          />
           <button className="nextButton" onClick={this.nextDate}>
             &gt;
           </button>
         </div>
-        {getList.length > 0 ? (
-          <div className="taskContentWrap">{this.allTasksTable()}</div>
-        ) : (
-          <h1>{dataFetchMsg}</h1>
-        )}
+        <div className="taskContentWrap">{this.allTasksTable()}</div>
       </div>
     );
   }

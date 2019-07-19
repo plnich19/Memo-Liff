@@ -29,14 +29,23 @@ class YourList extends Component {
     const groupId = context.groupId;
     const userId = context.userId;
     this.setState({
-      dataFetchMsg: "loading"
+      dataFetchMsg: "Loading"
     });
     fetch(
       `https://asia-east2-memo-chatbot.cloudfunctions.net/DataAPI/?action=${action}&groupId=${groupId}&userId=${userId}`
     )
       .then(response => response.json())
       .then(data => {
-        this.setState({ getYourList: data, dataFetchMsg: "No Data" });
+        if (data.length == 0) {
+          this.setState({
+            dataFetchMsg: "No Data"
+          });
+          return;
+        }
+        this.setState({
+          getYourList: data,
+          dataFetchMsg: "Done"
+        });
       });
   };
 
