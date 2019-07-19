@@ -19,7 +19,8 @@ class AllList extends Component {
         index: 0,
         humanDate: "ทั้งหมด",
         timestamp: "all"
-      }
+      },
+      eachDateTasks: []
     };
   }
 
@@ -145,57 +146,75 @@ class AllList extends Component {
     this.getData(context);
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const { currentDateFromSelect, getList } = this.state;
+    if (
+      prevState.currentDateFromSelect.index !== currentDateFromSelect.index ||
+      prevState.getList !== getList
+    ) {
+      this.eachDateTasks();
+    }
+  }
+
   allTasksTable() {
-    const { currentDateFromSelect, getMembersList } = this.state;
+    const { getMembersList, eachDateTasks } = this.state;
     return (
       <div>
-        {this.state.getList
-          .sort((a, b) => new Date(b.datetime) - new Date(a.datetime))
-          .reverse()
-          .map(task => {
-            const propsToCardTask = {
-              key: task.taskId,
-              task: task,
-              membersList: getMembersList
-            };
-            if (currentDateFromSelect.timestamp === "all") {
-              return <CardTask {...propsToCardTask} />;
-            } else {
-              const todayLimit =
-                currentDateFromSelect.timestamp - 7 * 1000 * 60 * 60;
-              const tmrwLimit =
-                currentDateFromSelect.timestamp + 1 * 24 * 60 * 60 * 1000;
-              if (todayLimit <= task.datetime && task.datetime <= tmrwLimit) {
-                return <CardTask {...propsToCardTask} />;
-              } else {
-                return null;
-              }
-            }
-          })}
+        {eachDateTasks.map(task => {
+          const propsToCardTask = {
+            key: task.taskId,
+            task: task,
+            membersList: getMembersList
+          };
+          return <CardTask {...propsToCardTask} />;
+        })}
       </div>
     );
   }
+
+  eachDateTasks = () => {
+    const { currentDateFromSelect, getList } = this.state;
+    let results = [];
+    getList
+      .sort((a, b) => new Date(b.datetime) - new Date(a.datetime))
+      .reverse()
+      .map(task => {
+        if (currentDateFromSelect.timestamp === "all") {
+          results.push(task);
+        } else {
+          const todayLimit =
+            currentDateFromSelect.timestamp - 7 * 1000 * 60 * 60;
+          const tmrwLimit =
+            currentDateFromSelect.timestamp + 1 * 24 * 60 * 60 * 1000;
+          if (todayLimit <= task.datetime && task.datetime <= tmrwLimit) {
+            results.push(task);
+          }
+        }
+      });
+    this.setState({
+      eachDateTasks: results
+    });
+  };
 
   render() {
     const {
       getList,
       dataFetchMsg,
       filterTaskOptions,
-      currentDateFromSelect
+      currentDateFromSelect,
+      eachDateTasks
     } = this.state;
     let countDone = 0;
-    getList.forEach(task => {
+    eachDateTasks.forEach(task => {
       if (task.status === true) {
         countDone++;
       }
     });
-    console.log(countDone, "countDone");
-    const calPercentage = (countDone / getList.length) * 100;
-    const percentage = calPercentage.toFixed(2);
+    const calPercentage = (countDone / eachDateTasks.length) * 100;
+    const percentage = calPercentage.toFixed(0);
     return (
       <div className="allTasks">
-        <div className="groupScore">Your Group Score</div>
-        <ProgressBar percentage={percentage} />
+        <ProgressBar percentage={percentage} title="Your Group Score" />
         <div className="chooseDate">
           <button className="prevButton" onClick={this.prevDate}>
             &lt;
