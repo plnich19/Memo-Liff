@@ -10,8 +10,9 @@
   font-size: 1rem;
 }
 
-.taskContent.done {
-  /* background-color: rgba(28, 146, 28, 0.7); */
+.taskContent.done .taskContentTitle {
+  color: #32cd32;
+  text-shadow: none;
 }
 
 .taskContent.expired {
@@ -22,7 +23,7 @@
   font-size: 1.4em;
   font-weight: bold;
   margin-bottom: 0.4rem;
-  text-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.7);
+  text-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.5);
 }
 
 .taskContent.done.taskContentTitle {
