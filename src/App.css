@@ -20,6 +20,9 @@ body {
   font-size: 1rem;
   color: #fff;
   min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .header {
