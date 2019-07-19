@@ -36,37 +36,37 @@ class App extends Component {
     firebase.initializeApp(config);
   }
 
-  // initialize = () => {
-  //   liff.init(
-  //     data => {
-  //       const groupId = data.context.groupId;
-  //       liff
-  //         .getProfile()
-  //         .then(profile => {
-  //           this.setState({
-  //             context: {
-  //               displayName: profile.displayName,
-  //               userId: profile.userId,
-  //               pictureUrl: profile.pictureUrl,
-  //               statusMessage: profile.statusMessage,
-  //               groupId: groupId
-  //             },
-  //             getProfileStatus: "success"
-  //           });
-  //         })
-  //         .catch(err => {
-  //           this.setState({
-  //             getProfileStatus: "error"
-  //           });
-  //         });
-  //     },
-  //     err => {
-  //       this.setState({
-  //         liffInitStatus: "error"
-  //       });
-  //     }
-  //   );
-  // };
+  initialize = () => {
+    liff.init(
+      data => {
+        const groupId = data.context.groupId;
+        liff
+          .getProfile()
+          .then(profile => {
+            this.setState({
+              context: {
+                displayName: profile.displayName,
+                userId: profile.userId,
+                pictureUrl: profile.pictureUrl,
+                statusMessage: profile.statusMessage,
+                groupId: groupId
+              },
+              getProfileStatus: "success"
+            });
+          })
+          .catch(err => {
+            this.setState({
+              getProfileStatus: "error"
+            });
+          });
+      },
+      err => {
+        this.setState({
+          liffInitStatus: "error"
+        });
+      }
+    );
+  };
 
   setStage = stage => {
     this.setState({ stage });
@@ -74,16 +74,16 @@ class App extends Component {
 
   componentDidMount() {
     window.addEventListener("load", this.initialize);
-    this.setState({
-      context: {
-        displayName: "J",
-        userId: "Ud3f6ed0ecf179f61d9c325caec2ace0a",
-        pictureUrl:
-          "https://profile.line-scdn.net/0hGpx_kG9jGF9FJjKE5tFnCHljFjIyCB4XPURSPmEjQ2dtFQpbfEZWPDMlQjtvEAwKfkRQamZyEWZq",
-        statusMessage: "status",
-        groupId: "Ce938b6c2ba40812b0afa36e11078ec56"
-      }
-    });
+    // this.setState({
+    //   context: {
+    //     displayName: "J",
+    //     userId: "Ud3f6ed0ecf179f61d9c325caec2ace0a",
+    //     pictureUrl:
+    //       "https://profile.line-scdn.net/0hGpx_kG9jGF9FJjKE5tFnCHljFjIyCB4XPURSPmEjQ2dtFQpbfEZWPDMlQjtvEAwKfkRQamZyEWZq",
+    //     statusMessage: "status",
+    //     groupId: "Ce938b6c2ba40812b0afa36e11078ec56"
+    //   }
+    // });
   }
 
   render() {
