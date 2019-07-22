@@ -80,6 +80,7 @@ body {
   right: 0;
   bottom: 0;
   margin: auto;
+  border-radius: 100%;
 }
 
 .headerBack {
@@ -110,7 +111,7 @@ body {
 
 .react-datepicker-popper[data-placement^="top"],
 .react-datepicker-popper[data-placement^="bottom"] {
-  width: 250px;
+  width: 80vw;
 }
 
 .react-datepicker__navigation--next--with-time:not(.react-datepicker__navigation--next--with-today-button) {
