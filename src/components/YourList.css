@@ -1,25 +1,5 @@
-h1 {
-  font-size: 40px;
-  text-align: center;
-}
-
-h2 {
-  font-size: 40px;
-  margin: 0%;
-  padding-top: 1px;
-  text-align: start;
-  margin-bottom: 10px;
-  color: black;
-}
-
 .editModalButton {
   margin-right: 2%;
-}
-
-input {
-  margin-bottom: 10px;
-  width: 70%;
-  border-radius: 4px;
 }
 
 .deleteText {
@@ -28,7 +8,7 @@ input {
 }
 
 .deleteTitle {
-  color: red;
+  color: #ff6a6a;
 }
 
 .editdeleteButton {
@@ -48,11 +28,6 @@ input {
   margin-left: 15px;
   position: relative;
   margin-top: 10%;
-}
-
-.modalText {
-  font-size: 12pt;
-  color: black;
 }
 
 .Modal {
@@ -151,20 +126,22 @@ input {
 }
 
 .form {
-  width: 340px;
-}
-
-.form p {
-  margin: 0%;
-  font-size: 24px;
-  color: black;
+  width: 100%;
 }
 
 .form input {
-  height: 20px;
-  font-size: 15px;
+  font-size: 1rem;
+  padding: 0.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.3);
+  color: rgba(255, 255, 255, 1);
 }
-
+.form input:focus {
+  outline: 0;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
 .myDatePicker,
 .react-datepicker-wrapper,
 .react-datepicker__input-container {

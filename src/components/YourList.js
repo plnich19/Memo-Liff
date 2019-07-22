@@ -63,6 +63,7 @@ class YourList extends Component {
 
   onDateTimeChanged = date => {
     const dateToTimStamp = new Date(date).getTime();
+
     this.setState({
       modalDatetime: dateToTimStamp
     });
@@ -89,10 +90,12 @@ class YourList extends Component {
     const { openTaskId, modalTitle, modalDatetime } = this.state;
     const taskId = openTaskId;
     const url = `https://asia-east2-memo-chatbot.cloudfunctions.net/DataAPI/?action=updateTask&groupId=${groupId}&taskId=${taskId}`;
+    const updateDate = new Date(modalDatetime).setUTCMilliseconds(0);
     const bodyData = {
       title: modalTitle,
-      datetime: modalDatetime
+      datetime: updateDate
     };
+    console.log(updateDate, "updateDate");
     axios
       .post(url, bodyData)
       .then(response => {
@@ -178,8 +181,10 @@ class YourList extends Component {
     return (
       <div>
         <Modal
-          className="Modal"
-          overlayClassName="Overlay"
+          classNames={{
+            overlay: "modalThemeOverlay",
+            modal: "modalTheme"
+          }}
           open={this.state.openEdit}
           onClose={this.onCloseEditModal}
           center
@@ -219,7 +224,10 @@ class YourList extends Component {
           </button>
         </Modal>
         <Modal
-          className="Modal"
+          classNames={{
+            overlay: "modalThemeOverlay",
+            modal: "modalTheme"
+          }}
           open={this.state.openDelete}
           onClose={this.onCloseDeleteModal}
           center
@@ -246,7 +254,10 @@ class YourList extends Component {
           </div>
         </Modal>
         <Modal
-          className="Modal"
+          classNames={{
+            overlay: "modalThemeOverlay",
+            modal: "modalTheme"
+          }}
           open={this.state.openCheck}
           onClose={this.onCloseCheckModal}
           center
@@ -293,7 +304,16 @@ class YourList extends Component {
             </td>
           </tr>
           <div className="time">
-            {moment(task.datetime).format("MMMM Do YYYY, h:mm a")}
+            {task.datetime ? (
+              moment(task.datetime).format("MMMM Do YYYY, h:mm a")
+            ) : (
+              <button
+                className="editdeleteButton"
+                onClick={this.onOpenEditModal(task.taskId)}
+              >
+                insert date
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -312,7 +332,7 @@ class YourList extends Component {
           .sort((a, b) => new Date(b.datetime) - new Date(a.datetime))
           .reverse()
           .map(task => {
-            if (todayTime <= task.datetime && task.datetime <= tmrTime) {
+            if (todayTime <= task.createtime && task.createtime <= tmrTime) {
               return this.yourTasksTable(task);
             } else if (task.status === true) {
               return null;

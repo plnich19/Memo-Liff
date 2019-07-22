@@ -16,7 +16,12 @@ body {
   margin: 0;
   padding: 0;
   background: #0d588c;
-  background: linear-gradient(0deg, rgba(13, 88, 140, 1) 0%, rgba(25, 108, 195, 1) 50%, rgba(13, 88, 140, 1) 100%);
+  background: linear-gradient(
+    0deg,
+    rgba(13, 88, 140, 1) 0%,
+    rgba(25, 108, 195, 1) 50%,
+    rgba(13, 88, 140, 1) 100%
+  );
   font-size: 1rem;
   color: #fff;
   min-height: 100%;
@@ -27,6 +32,7 @@ body {
 
 .header {
   margin-bottom: 1rem;
+  padding: 4rem 0rem 0;
 }
 
 .header.YourList .headerProfile {
@@ -40,6 +46,10 @@ body {
   background-color: rgba(0, 0, 0, 0.4);
   padding: 0.5rem 1rem;
   margin-bottom: 1rem;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
 }
 
 .headerProfileWrap {
@@ -52,7 +62,7 @@ body {
   box-shadow: 0 0 0 0.4rem rgba(0, 0, 0, 0.3);
   border-radius: 100%;
   overflow: hidden;
-  transition: width .4s;
+  transition: width 0.4s;
 }
 
 .headerProfileImageWrap {
@@ -82,4 +92,57 @@ body {
   text-align: center;
   width: 50vw;
   margin: 0.5rem auto 1rem;
+}
+
+#root {
+  width: 100%;
+}
+
+.modalThemeOverlay {
+  padding: 0.5rem;
+}
+
+.modalTheme {
+  flex: 0 0 100%;
+  background-color: #0d588c;
+  color: white;
+}
+
+.react-datepicker-popper[data-placement^="top"],
+.react-datepicker-popper[data-placement^="bottom"] {
+  width: 250px;
+}
+
+.react-datepicker__navigation--next--with-time:not(.react-datepicker__navigation--next--with-today-button) {
+  right: 10px;
+}
+.react-datepicker {
+  display: block;
+}
+.react-datepicker__header .react-datepicker__header--time {
+  padding: 0.2rem;
+}
+.react-datepicker__month-container {
+  float: none;
+}
+.react-datepicker__time-container {
+  float: none;
+  width: auto;
+  border: 0;
+  border-top: 1px solid #aeaeae;
+}
+.react-datepicker__time-container
+  .react-datepicker__time
+  .react-datepicker__time-box {
+  width: auto;
+}
+.react-datepicker__time-list {
+  height: auto !important;
+  overflow-y: hidden;
+  overflow-x: auto;
+  width: auto;
+  white-space: nowrap;
+}
+.react-datepicker__time-list-item {
+  display: inline-block;
 }
