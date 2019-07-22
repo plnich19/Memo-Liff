@@ -214,7 +214,7 @@ class AllList extends Component {
     const calPercentage = (countDone / eachDateTasks.length) * 100;
     const percentage = calPercentage.toFixed(0);
     if (getList.length === 0 || eachDateTasks.length === 0)
-      return <h1>{dataFetchMsg}</h1>;
+      return <h1 className="wariningMsg">{dataFetchMsg}</h1>;
     return (
       <div className="allTasks">
         <ProgressBar percentage={percentage} title="Your Group Score" />

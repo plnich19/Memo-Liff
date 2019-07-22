@@ -353,7 +353,7 @@ class YourList extends Component {
             <tbody className="tableBody">{this.filterTask()}</tbody>
           </table>
         ) : (
-          <h1>{dataFetchMsg}</h1>
+          <h1 className="wariningMsg">{dataFetchMsg}</h1>
         )}
       </div>
     );
