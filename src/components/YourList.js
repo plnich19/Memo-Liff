@@ -275,7 +275,7 @@ class YourList extends Component {
         </Modal>
         <div className="eachTask">
           <tr key={task.taskId}>
-            <td>{task.title}</td>
+            <td className="tasktTitle">{task.title}</td>
             <td>
               <button
                 className="editdeleteButton"
@@ -308,10 +308,10 @@ class YourList extends Component {
               moment(task.datetime).format("MMMM Do YYYY, h:mm a")
             ) : (
               <button
-                className="editdeleteButton"
+                className="invalidDateButton"
                 onClick={this.onOpenEditModal(task.taskId)}
               >
-                insert date
+                REMINDER DUE DATE
               </button>
             )}
           </div>

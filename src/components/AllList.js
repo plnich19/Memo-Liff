@@ -177,7 +177,7 @@ class AllList extends Component {
     const { currentDateFromSelect, getList } = this.state;
     let results = [];
     getList
-      .sort((a, b) => new Date(b.datetime) - new Date(a.datetime))
+      .sort((a, b) => new Date(b.createtime) - new Date(a.createtime))
       .reverse()
       .map(task => {
         if (currentDateFromSelect.timestamp === "all") {
@@ -217,7 +217,7 @@ class AllList extends Component {
       return <h1 className="wariningMsg">{dataFetchMsg}</h1>;
     return (
       <div className="allTasks">
-        <ProgressBar percentage={percentage} title="Your Group Score" />
+        <ProgressBar percentage={percentage} title="Group Productivity" />
         <div className="chooseDate">
           <button className="prevButton" onClick={this.prevDate}>
             &lt;

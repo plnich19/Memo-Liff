@@ -13,7 +13,10 @@ export default function CardTask({ task, membersList = [] }) {
     <div className={`taskContent ${taskStatus} `}>
       <div className="taskContentTitle">{task.title}</div>
       <div className="taskContentDate">
-        {moment(task.datetime).format("MMMM Do YYYY  hh:mm a")}
+        {/* {moment(task.datetime).format("MMMM Do YYYY  hh:mm a")} */}
+        {task.datetime
+          ? moment(task.datetime).format("MMMM Do YYYY, h:mm a")
+          : null}
       </div>
       <div className="taskContentCreateBy">
         Create by:

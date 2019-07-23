@@ -24,15 +24,7 @@ function Header(props) {
             </div>
           </div>
           <div className="headerProfileName">
-            {isAllList ? (
-              <p>Hello, {context.displayName}</p>
-            ) : (
-              <p>
-                "The price of greatness is responsibility."
-                <br />
-                <b>— Winston Churchill —</b>
-              </p>
-            )}
+            {isAllList ? <p>Hello, {context.displayName}</p> : <p />}
           </div>
         </div>
         <div

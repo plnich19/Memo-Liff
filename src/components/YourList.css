@@ -94,6 +94,11 @@
   color: white;
 }
 
+.tasktTitle {
+  font-weight: bold;
+  text-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.5);
+}
+
 .yourListTable {
   border-collapse: collapse;
   width: 100%;
@@ -105,20 +110,21 @@
 
 .yourListTable td {
   text-align: left;
-  padding: 10px;
+  padding: 10px 1px;
   width: 100%;
 }
 
 .eachTask {
   border-bottom: 1px solid #ddd;
   font-size: 1.3em;
+  padding-left: 2%;
 }
 
 .time {
   color: silver;
-  padding-left: 3%;
   margin-bottom: 10px;
   font-size: 0.7em;
+  /* padding-left: 3%; */
 }
 
 .tableBody {
@@ -148,4 +154,12 @@
 .react-datepicker-wrapper,
 .react-datepicker__input-container {
   width: 100%;
+}
+
+.invalidDateButton {
+  background: none;
+  border: none;
+  color: yellow;
+  font-size: 0.9em;
+  padding-left: 0;
 }
