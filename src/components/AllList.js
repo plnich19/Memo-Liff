@@ -49,7 +49,7 @@ class AllList extends Component {
           this.setState({
             getList: dataTasks.data,
             getMembersList: dataMembers.data,
-            dataFetchMsg: "Done"
+            dataFetchMsg: "No Task"
           });
           this.getFilterTaskOptions(dataTasks.data);
         })
@@ -74,7 +74,6 @@ class AllList extends Component {
         dateArr.push(moment(task.datetime).format("YYYY-MM-DD"));
       }
     });
-
     const distinctedDateArr = [...new Set(dateArr.sort().reverse())].map(
       date => {
         let timestampDateValue = new Date(date).getTime();
@@ -85,7 +84,6 @@ class AllList extends Component {
         return obj;
       }
     );
-
     let results = [
       {
         value: "all",

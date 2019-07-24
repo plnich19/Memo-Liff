@@ -63,7 +63,6 @@ class YourList extends Component {
 
   onDateTimeChanged = date => {
     const dateToTimStamp = new Date(date).getTime();
-
     this.setState({
       modalDatetime: dateToTimStamp
     });
@@ -95,7 +94,6 @@ class YourList extends Component {
       title: modalTitle,
       datetime: updateDate
     };
-    console.log(updateDate, "updateDate");
     axios
       .post(url, bodyData)
       .then(response => {
@@ -311,7 +309,7 @@ class YourList extends Component {
                 className="invalidDateButton"
                 onClick={this.onOpenEditModal(task.taskId)}
               >
-                REMINDER DUE DATE
+                REMIND DUE DATE
               </button>
             )}
           </div>
